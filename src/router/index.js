@@ -7,17 +7,17 @@ import Home from '@/components/Home.vue'
 import Destinations from '@/components/Destinations.vue'
 import Hotels from '@/components/Hotels.vue'
 import TourCompanies from '@/components/TourCompanies.vue'
-import AboutUs from '@/components/AboutUs.vue'
 import SignUp from '@/components/SignUp.vue'
 import LogIn from '@/components/LogIn.vue'
 import UserProfile from '@/components/UserProfile.vue'
 import SandyBeaches from '@/components/SandyBeaches.vue'
 import Cultures from '@/components/Cultures.vue'
 import HistoricalSites from '@/components/HistoricalSites.vue'
-import Wildlife from '@/components/Wildlife.vue'
+import WildlifeSafaris from '@/components/WildlifeSafaris.vue'
 import Sceneries from '@/components/Sceneries.vue'
 import FAQs from '@/components/FAQs.vue'
-
+import TravelBlog from '@/components/TravelBlog.vue'
+import IslandsMarineAttractions from '@/components/IslandsMarineAttractions.vue'
 
 
 
@@ -38,11 +38,6 @@ const router = createRouter({
       name:"hotels",
       path:"/hotels",
       component: Hotels
-     },
-     {
-      name:"AboutUs",
-      path:"/aboutus",
-      component:AboutUs
      },
      {
       name:"SignUp",
@@ -80,9 +75,9 @@ const router = createRouter({
       component:TourCompanies
      },
           {
-      name:"WIldlife",
-      path:"/wildlife",
-      component:Wildlife
+      name:"WIldlifeSafaris",
+      path:"/wildlifesafaris",
+      component:WildlifeSafaris
      },
           {
       name:"Sceneries",
@@ -93,6 +88,16 @@ const router = createRouter({
       name:"FAQs",
       path:"/faqs",
       component:FAQs
+     },
+     {
+      name:"TravelBlog",
+      path:"/travelblog",
+      component:TravelBlog
+     },
+     {
+      name:"IslandsMarineAttractions",
+      path:"/islandsmarineattractions",
+      component:IslandsMarineAttractions
      }
 
   ],
