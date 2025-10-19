@@ -5,10 +5,7 @@
 <template>
 
     <v-app-bar 
-      flat
-  color="transparent"
-  elevate-on-scroll
-  app
+       elevate-on-scroll
   style="background-color: rgb(242, 223, 223);"
 >
         <v-app-bar-title icon="public/travelnest1.png">Safari Guide</v-app-bar-title>
@@ -34,6 +31,7 @@
     .search-bar {
   max-width: 200px;
 }
+
 
 
 </style>

@@ -23,11 +23,15 @@ import NavBar from './components/NavBar.vue'
 </template>
 
 
-<style scoped>
+<style>
 .pagea{
   background-color: #f0f8ff;
   min-height: 100vh;
   padding: 20PX;
+}
+.v-app-bar {
+  position: relative;
+  top: auto;
 }
 </style>
 
