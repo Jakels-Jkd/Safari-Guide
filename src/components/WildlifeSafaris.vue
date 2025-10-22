@@ -6,7 +6,7 @@ import { ref } from 'vue'
 <template>
 
   <div class="page">
-    <v-container>
+    <v-container pa="0%">
 
       <h1 style="text-align: center; text-decoration: underline;">Wildlife & Safaris</h1>
       <p style="font-size: 1.25em;">Discover Africa’s untamed beauty through its wildlife and safaris — where nature
@@ -25,8 +25,8 @@ import { ref } from 'vue'
             src="public/destinations/wildlifesafaris/giusi-borrasi-2KB7G8WD7CE-unsplash.jpg"></v-carousel-item>
         </v-carousel>
       </v-row>
-    </v-container>
-    <v-container><br></br>
+ 
+   <br></br>
       <h1 style="text-align: center; text-decoration: underline;"><b>Wildlife</b></h1>
 
       <P> Experience the wild up close — from majestic elephants to rare bird species, explore the beauty of nature in
@@ -36,8 +36,8 @@ import { ref } from 'vue'
       </P>
       <P style="font-size: 1.6em; text-align: center; font-weight: bolder;">Lets dive in!!</P>
       <br></br>
-      <v-row>
-        <v-col>
+      <v-row align="stretch">
+        <v-col  cols="12" md="6" >
         
           <h2 style="text-align: center;text-decoration: underline;">1. Lions - The Kings of the Savannah</h2>
          
@@ -53,20 +53,18 @@ import { ref } from 'vue'
             Conservation efforts are vital to protect these iconic creatures, as their numbers face threats from habitat
             loss, human-wildlife conflict, and poaching. By visiting responsible wildlife reserves and supporting
             eco-tourism, travelers can contribute to the survival of lions and experience the thrill of seeing these
-            magnificent predators in their natural habitat.
-            <v-img
-            width="100%"
-            
-            src="public/destinations/wildlifesafaris/lions/ramon-vloon-_t99u7ktTnU-unsplash.jpg"></v-img>
-          </p>
-          
-        </v-col cols="12" md="6">
-        >
-      </v-row>
-      <v-row>
-        <v-col>
-
+            magnificent predators in their natural habitat.  </p>
         </v-col>
+        <v-col cols="12" md="6" class="d-flex">
+            <v-img 
+            class="jam"
+
+            src="public/destinations/wildlifesafaris/lions/ramon-vloon-_t99u7ktTnU-unsplash.jpg"></v-img>
+        
+            </v-col>
+            <v-col cols="12" md="6" class="d-flex">
+              
+            </v-col>
       </v-row>
     </v-container>
   </div>
@@ -85,7 +83,7 @@ import { ref } from 'vue'
 }
 
 .page {
-  background-color: #F5E6C8;
+  background-color: #d2d2d2;
   background-size: cover;
   height: 100%;
   padding: 0;
@@ -101,6 +99,15 @@ import { ref } from 'vue'
   height: 100%;
   padding: 0%;
   justify-self: flex-start;
+
+}
+.jam{
+  float: right;
+  width: 1050px;
+  height: 550px;
+  margin-top: 50px;
+  border-radius: 8px;
+  object-fit: fill;
 
 }
 </style>

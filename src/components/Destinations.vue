@@ -55,67 +55,68 @@ const searchQuery = ref('')
         </v-col>
         <v-col cols="12" md="4">
           <v-card class="image-card">
-            <v-img src="public/destinations/marine.png" height="300px" cover />
+           <RouterLink to="/islandsmarineattractions"> <v-img src="public/destinations/marine.png" height="300px" cover /></RouterLink>
             <V-text class="image-texts">2. Islands & Marine Attractions</V-text>
           </v-card>
         </v-col>
         <v-col cols="12" md="4">
           <v-card class="image-card">
-            <v-img src="public/destinations/laela-OHM88hDgNZ4-unsplash.jpg" height="300px" cover />
+           <RouterLink to="/sandybeaches"> <v-img src="public/destinations/destination3 (3).png" height="300px" cover /></RouterLink>
             <V-text class="image-texts">3. Sandy Beaches & Coastal Attractions</V-text>
           </v-card>
         </v-col>
         <v-col cols="12" md="4">
           <v-card class="image-card">
-            <v-img src="public/destinations/thomas-bennie-1jlJrr4XGkU-unsplash (1).jpg" height="300px" cover />
+          <RouterLink to="/sceneries" ><v-img src="public/destinations/thomas-bennie-1jlJrr4XGkU-unsplash (1).jpg" height="300px" cover /></RouterLink>
             <V-text class="image-texts">4. Beautiful Sceneries & Mountains</V-text>
           </v-card>
         </v-col>
         <v-col cols="12" md="4">
           <v-card class="image-card">
-            <v-img src="public/destinations/brian-kungu-kr4A0_7JhSc-unsplash.jpg" height="300px" cover />
+            <RouterLink to="/cultures"><v-img src="public/destinations/brian-kungu-kr4A0_7JhSc-unsplash.jpg" height="300px" cover /></RouterLink>
             <V-text class="image-texts">5. Kenyan cultures</V-text>
           </v-card>
-        </v-col> <v-col cols="12" md="4">
+        </v-col> 
+        <v-col cols="12" md="4">
           <v-card class="image-card">
-            <v-img src="public/destinations/pravin-wakode-bhDb6Gd0BVw-unsplash.jpg" height="300px" cover />
+            <RouterLink to="/historicalsites"><v-img src="public/destinations/pravin-wakode-bhDb6Gd0BVw-unsplash.jpg" height="300px" cover /></RouterLink>
             <V-text class="image-texts">6. Historical Sites & Monuments</V-text>
           </v-card>
         </v-col>
         <v-col cols="12" md="4">
           <v-card class="image-card">
-            <v-img src="public/destinations/frantisek-duris-7j-aTZwAB7s-unsplash.jpg" height="300px" cover />
+            <RouterLink to="/adventureoutdooractivities"><v-img src="public/destinations/frantisek-duris-7j-aTZwAB7s-unsplash.jpg" height="300px" cover /></RouterLink>
             <V-text class="image-texts">7. Adventure & Outdoor Activities (includes adventure sports)</V-text>
           </v-card>
         </v-col>
         <v-col cols="12" md="4">
           <v-card class="image-card">
-            <v-img src="public/destinations/bibhash-polygon-cafe-banerjee-3QPNiZ_Nqjs-unsplash.jpg" height="300px"
-              cover />
+            <RouterLink to="/lakeswestlands"><v-img src="public/destinations/bibhash-polygon-cafe-banerjee-3QPNiZ_Nqjs-unsplash.jpg" height="300px"
+                cover /></RouterLink>
             <V-text class="image-texts">8. Lakes(inland islands) & Wetlands</V-text>
           </v-card>
         </v-col>
         <v-col cols="12" md="4">
           <v-card class="image-card">
-            <v-img src="public/destinations/man-a-stylist-uQa4DN8HAb0-unsplash.jpg" height="300px" cover />
+          <RouterLink to="/forestsandnaturereserves"><v-img src="public/destinations/man-a-stylist-uQa4DN8HAb0-unsplash.jpg" height="300px" cover /></RouterLink>
             <V-text class="image-texts">9. Forest & Nature Reserves</V-text>
           </v-card>
         </v-col>
         <v-col cols="12" md="4">
           <v-card class="image-card">
-            <v-img src="public/destinations/youhana-nassif-yv3NsDUFK7g-unsplash.jpg" height="300px" cover />
+            <RouterLink to="/desertandsemiaridregions"><v-img src="public/destinations/youhana-nassif-yv3NsDUFK7g-unsplash.jpg" height="300px" cover /></RouterLink>
             <V-text class="image-texts">10. Desert & Semi-Arid Regions</V-text>
           </v-card>
         </v-col>
         <v-col cols="12" md="4">
           <v-card class="image-card">
-            <v-img src="public/destinations/watersportinsagana.png" height="300px" cover />
+           <RouterLink to="/watersportinsagana"><v-img src="public/destinations/watersportinsagana.png" height="300px" cover /></RouterLink>
             <V-text class="image-texts">11.Water Sports & Rapids</V-text>
           </v-card>
         </v-col>
         <v-col cols="12" md="4">
           <v-card class="image-card">
-            <v-img src="public/destinations/ecotourism.png" height="300px" cover />
+           <RouterLink to="/ecotourism"><v-img src="public/destinations/ecotourism.png" height="300px" cover /></RouterLink>
             <V-text class="image-texts">12. Spiritual & Eco Tourism</V-text>
           </v-card>
         </v-col>
@@ -129,7 +130,7 @@ const searchQuery = ref('')
           and the rich cultures of Lamu, Kenya is a destination like no other. Whether you seek adventure, relaxation,
           or discovery — each corner of this land tells a story waiting for you to explore.
           Begin your journey today, and experience the magic that makes Kenya truly unforgettable.</p>
-        +
+        
         <v-carousel cycle interval="2000" pause-on-hover>
           <v-carousel-item src="public/destinations/finaldestination.png"></v-carousel-item>
           <v-carousel-item src="public/destinations/finaldestination2.png"></v-carousel-item>

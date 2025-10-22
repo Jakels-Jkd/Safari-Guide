@@ -18,7 +18,7 @@ import Sceneries from '@/components/Sceneries.vue'
 import FAQs from '@/components/FAQs.vue'
 import TravelBlog from '@/components/TravelBlog.vue'
 import IslandsMarineAttractions from '@/components/IslandsMarineAttractions.vue'
-
+import lakesWestlands from '@/components/LakesWestlands.vue'
 
 
 const router = createRouter({
@@ -98,8 +98,12 @@ const router = createRouter({
       name:"IslandsMarineAttractions",
       path:"/islandsmarineattractions",
       component:IslandsMarineAttractions
-     }
-
+     },
+    {
+      name:"LakesWestlands",
+      path:"/lakeswestlands",
+      component:lakesWestlands
+    }
   ],
 })
 
