@@ -8,26 +8,28 @@ import { ref } from 'vue'
         <v-col>
             <v-card class="katheu" style="margin-top: 10vh;">
                 <v-card-title style="font-weight: bolder; font-size: 1.5em; text-align: center;">Sign Up</v-card-title>
-                <v-text-field
-                label="Name"
-                type="text"
-                required
-                />
-                <v-text-field
-                label="email"
-                type="email"
-                required
-                />
-                <v-text-field
-                label="Password"
-                type="password"
-                required
-                />
-                <v-text-field
-                label="confirm password"
-                type="password"
-                required
-                />
+                <v-card-text>
+                    <v-form>
+                        <v-text-field
+                            label="Username"
+                            variant="outlined"
+                            color="primary"
+                            style="margin-bottom: 2vh;"
+                        ></v-text-field>
+                        <v-text-field
+                            label="Email"
+                            variant="outlined"
+                            color="primary"
+                            style="margin-bottom: 2vh;"
+                        ></v-text-field>
+                        <v-text-field
+                            label="Password"
+                            variant="outlined"
+                            color="primary"
+                            style="margin-bottom: 2vh;"
+                        ></v-text-field>
+                    </v-form>
+                </v-card-text>
                 <v-card-actions style="flex-direction: column; align-items: center;">
                     <v-btn color="primary" style="margin-bottom: 3px;">Confirm</v-btn>
                     <v-text style="text-align: center; margin-bottom: 2vh;">
