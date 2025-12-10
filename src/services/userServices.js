@@ -1,4 +1,4 @@
-import api from "@/Apis/api.js";
+import api from "@/router/api.js";
 
 // REGISTER
 export const registerUser = async (data) => {

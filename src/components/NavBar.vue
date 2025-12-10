@@ -1,19 +1,61 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, computed, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 
-const user = ref("")
+const router = useRouter()
+const drawer = ref(false)
+const isLoggedIn = ref(false)
+const userName = ref('')
 
-const initials = user.value
-  .split(' ')
-  .map(name => name[0])
-  .join('')
-  .toUpperCase()
-  .slice(0, 2)
+// initial for name
+const initials = computed(() => {
+  if (!userName.value) return '??'
+  return userName.value
+    .split(' ')
+    .map(n => n[0])
+    .join('')
+    .toUpperCase()
+    .slice(0, 2)
+})
+
+// Function to update login status
+const updateLoginStatus = () => {
+  const token = localStorage.getItem('token')
+  const savedUser = localStorage.getItem('user')
+
+  if (token && savedUser) {
+    isLoggedIn.value = true
+    try {
+      const user = JSON.parse(savedUser)
+      userName.value = user.name || user.email.split('@')[0] || 'User'
+    } catch {
+      userName.value = 'User'
+    }
+  } else {
+    isLoggedIn.value = false
+    userName.value = ''
+  }
+}
+
+onMounted(() => {
+  updateLoginStatus()
+  window.addEventListener('storage', updateLoginStatus)
+})
+
+// Logout function
+const logout = () => {
+  if (confirm('Are you sure you want to log out?')) {
+    localStorage.removeItem('token')
+    localStorage.removeItem('user')
+    localStorage.removeItem('lastBookings') 
+    updateLoginStatus()
+    router.push('/')
+  }
+}
 </script>
 
 <template>
   <v-app-bar elevate-on-scroll color="#f2dfdf" height="64">
-      
     <div class="logo-title">
       <v-img
         src="public/icon/tourism.png"
@@ -24,27 +66,66 @@ const initials = user.value
       />
       <span class="app-title">| Safari Guide</span>
     </div>
+
     <v-spacer />
 
-    
-    <div class="hidden-sm-and-down"> 
+    <div class="hidden-sm-and-down">
       <v-btn variant="plain" color="black" to="/">Home</v-btn>
       <v-btn variant="plain" color="black" to="/destinations">Destinations</v-btn>
       <v-btn variant="plain" color="black" to="/hotels">Hotels</v-btn>
       <v-btn variant="plain" color="black" to="/tourcompanies">Tour Companies</v-btn>
       <v-btn variant="plain" color="black" to="/travelblog">Travel Blog</v-btn>
       <v-btn variant="plain" color="black" to="/contactus">Contact us</v-btn>
-      <v-btn variant="plain" color="black" to="/faqs">FAQs</v-btn>
+      <v-btn variant="plain" color="black" to="userprofile">user profile</v-btn>
     </div>
 
-    <v-btn variant="plain" color="black" to="/login" class="mx-2">Log In</v-btn>
+    <div class="d-flex align-center">
+      <div v-if="isLoggedIn" class="d-flex align-center mx-4">
+        <span class="mr-4 text-body-1 font-weight-medium">
+          Hello, {{ userName || 'User' }}
+        </span>
+        <v-btn variant="elevated" color="error" @click="logout" class="px-6">
+          <v-icon left>mdi-logout</v-icon>
+          Logout
+        </v-btn>
+      </div>
 
-    <v-avatar color="primary" size="40" class="ml-3">
-      <span class="white--text text-h6">{{ initials }}</span>
-    </v-avatar>
+      <v-btn v-else variant="elevated" color="primary" to="/login" class="mx-6 px-6">
+        <v-icon left>mdi-login</v-icon>
+        Log In
+      </v-btn>
 
-    <v-app-bar-nav-icon class="hidden-md-and-up" />
+      <v-avatar color="primary" size="44">
+        <span class="white--text text-h6 font-weight-bold">{{ initials }}</span>
+      </v-avatar>
+    </div>
+
+    <v-app-bar-nav-icon class="hidden-md-and-up" @click="drawer = !drawer" />
   </v-app-bar>
+
+  <v-navigation-drawer v-model="drawer" temporary app>
+    <v-list>
+      <v-list-item to="/">Home</v-list-item>
+      <v-list-item to="/destinations">Destinations</v-list-item>
+      <v-list-item to="/hotels">Hotels</v-list-item>
+      <v-list-item to="/tourcompanies">Tour Companies</v-list-item>
+      <v-list-item to="/travelblog">Travel Blog</v-list-item>
+      <v-list-item to="/contactus">Contact us</v-list-item>
+      <v-list-item to="/faqs">FAQs</v-list-item>
+
+      <v-divider class="my-4"></v-divider>
+
+      <v-list-item v-if="isLoggedIn" @click="logout" class="error--text">
+        <v-icon left>mdi-logout</v-icon>
+        Logout ({{ userName || 'User' }})
+      </v-list-item>
+
+      <v-list-item v-else to="/login">
+        <v-icon left>mdi-login</v-icon>
+        Log In
+      </v-list-item>
+    </v-list>
+  </v-navigation-drawer>
 </template>
 
 <style scoped>
@@ -64,12 +145,5 @@ const initials = user.value
   font-weight: 700;
   color: #1a1a1a;
   letter-spacing: 0.5px;
-}
-
-.v-btn_before {
-  background-color: transparent;
-}
-.v-btn_hover-before {
-  opacity: 0.08;
 }
 </style>

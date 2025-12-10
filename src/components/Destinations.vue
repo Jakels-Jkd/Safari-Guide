@@ -25,32 +25,27 @@ const destinations = [
     img: "public/CoverImages/pravin-wakode-bhDb6Gd0BVw-unsplash.jpg",    
     link: "/historicalsites" 
   },
-  { number: "06",
-    title: "Adventure & Extreme Sports",  
-    img: "public/CoverImages/frantisek-duris-7j-aTZwAB7s-unsplash.jpg",  
-    link: "/adventureoutdooractivities" 
-  },
-  { number: "07", 
+  { number: "06", 
     title: "Lakes & Wetlands",            
     img: "public/CoverImages/bibhash-polygon-cafe-banerjee-3QPNiZ_Nqjs-unsplash.jpg", 
     link: "/lakeswestlands" 
   },
-  { number: "08", 
+  { number: "07", 
     title: "Forests & Nature Reserves",   
     img: "public/CoverImages/man-a-stylist-uQa4DN8HAb0-unsplash.jpg",   
     link: "/forestsandnaturereserves" 
   },
-  { number: "09",  
+  { number: "08",  
     title: "Desert Expeditions",         
     img: "public/CoverImages/youhana-nassif-yv3NsDUFK7g-unsplash.jpg",  
     link: "/deserttourism" 
   },
-  { number: "10",
+  { number: "09",
     title: "Water Sports & Rapids",        
     img: "public/CoverImages/watersportinsagana.png",                    
     link: "/watersports" 
   },
-  { number: "11",  
+  { number: "10",  
    title: "Spiritual & Eco Tourism",      
    img: "public/CoverImages/ecotourism.png",                            
    link: "/ecotourism" 

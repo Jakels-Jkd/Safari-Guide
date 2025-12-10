@@ -8,9 +8,9 @@ import { ref } from 'vue'
     <!-- HERO – same emotional style you fell in love with -->
     <div class="nema">
       <div class="overlay"></div>
-      <div class="hero-content">
-        <h1 class="hero-title">Kenya’s Historical Sites</h1>
-        <p class="hero-subtitle">Where Every Stone Tells a Story</p>
+      <div class="content">
+        <h1 class="title">Kenya’s Historical Sites</h1>
+        <p class="subtitle">Where Every Stone Tells a Story</p>
       </div>
     </div>
 
@@ -21,14 +21,7 @@ import { ref } from 'vue'
 
       <!-- 1. Fort Jesus – Mombasa -->
       <v-row class="mb-16 align-center culture-entry fade-in">
-        <v-col cols="12" md="6">
-          <v-carousel height="520" cycle interval="4500" show-arrows hide-delimiter-background class="rounded-xl shadow-2xl">
-            <v-carousel-item src="public/history/fort-jesus1.jpg" />
-            <v-carousel-item src="public/history/fort-jesus2.jpg" />
-            <v-carousel-item src="public/history/fort-jesus3.jpg" />
-          </v-carousel>
-        </v-col>
-        <v-col cols="12" md="6">
+        <v-col cols="12" md="12">
           <h3 class="tribe-title">1. Fort Jesus – Mombasa</h3>
           <p class="tribe-text">
             Built by the Portuguese in 1593 to guard the Old Port of Mombasa.<br>
@@ -42,10 +35,7 @@ import { ref } from 'vue'
 
       <!-- 2. Gedi Ruins – Kilifi -->
       <v-row class="mb-16 align-center culture-entry fade-in">
-        <v-col cols="12" md="6" order-md="2">
-          <v-img src="public/history/gedi.jpg" class="rounded-xl shadow-2xl" height="520" cover />
-        </v-col>
-        <v-col cols="12" md="6" order-md="1">
+        <v-col cols="12" md="12" order-md="1">
           <h3 class="tribe-title">2. Gedi Ruins – Kilifi</h3>
           <p class="tribe-text">
             A lost Swahili city swallowed by jungle in the 17th century.<br>
@@ -59,10 +49,7 @@ import { ref } from 'vue'
 
       <!-- 3. Lamu Old Town -->
       <v-row class="mb-16 align-center culture-entry fade-in">
-        <v-col cols="12" md="6">
-          <v-img src="public/history/lamu.jpg" class="rounded-xl shadow-2xl" height="520" cover />
-        </v-col>
-        <v-col cols="12" md="6">
+        <v-col cols="12" md="12">
           <h3 class="tribe-title">3. Lamu Old Town – Lamu Island</h3>
           <p class="tribe-text">
             The oldest continually inhabited town in East Africa — UNESCO World Heritage Site since 2001.<br>
@@ -74,15 +61,9 @@ import { ref } from 'vue'
       </v-row>
       <v-divider class="custom-divider" />
 
-       4. Hell’s Gate National Park – Naivasha
+    <!--  4. Hell’s Gate National Park – Naivasha-->
       <v-row class="mb-16 align-center culture-entry fade-in">
-        <v-col cols="12" md="6" order-md="2">
-          <v-carousel height="520" cycle interval="4000" show-arrows class="rounded-xl shadow-2xl">
-            <v-carousel-item src="public/history/hells-gate1.jpg" />
-            <v-carousel-item src="public/history/hells-gate2.jpg" />
-          </v-carousel>
-        </v-col>
-        <v-col cols="12" md="6" order-md="1">
+        <v-col cols="12" md="12" order-md="1">
           <h3 class="tribe-title">4. Hell’s Gate National Park – Naivasha</h3>
           <p class="tribe-text">
             Towering red cliffs, geothermal steam vents and gorges that inspired The Lion King.<br>
@@ -96,10 +77,7 @@ import { ref } from 'vue'
 
       <!-- 5. Karen Blixen Museum – Nairobi -->
       <v-row class="mb-16 align-center culture-entry fade-in">
-        <v-col cols="12" md="6">
-          <v-img src="public/history/karen-blixen.jpg" class="rounded-xl shadow-2xl" height="520" cover />
-        </v-col>
-        <v-col cols="12" md="6">
+        <v-col cols="12" md="12">
           <h3 class="tribe-title">5. Karen Blixen Museum – Nairobi</h3>
           <p class="tribe-text">
             “I had a farm in Africa, at the foot of the Ngong Hills…”<br>
@@ -113,10 +91,7 @@ import { ref } from 'vue'
 
       <!-- 6. Nairobi National Museum -->
       <v-row class="mb-16 align-center culture-entry fade-in">
-        <v-col cols="12" md="6" order-md="2">
-          <v-img src="public/history/nairobi-museum.jpg" class="rounded-xl shadow-2xl" height="520" cover />
-        </v-col>
-        <v-col cols="12" md="6" order-md="1">
+        <v-col cols="12" md="12" order-md="1">
           <h3 class="tribe-title">6. Nairobi National Museum</h3>
           <p class="tribe-text">
             The cradle of humankind exhibits, Joy Adamson’s paintings, 900 stuffed birds, and the original Hominid Vault.<br>
@@ -129,13 +104,7 @@ import { ref } from 'vue'
 
       <!-- 7. Ngong Hills -->
       <v-row class="mb-16 align-center culture-entry fade-in">
-        <v-col cols="12" md="6">
-          <v-carousel height="520" cycle interval="4000" show-arrows class="rounded-xl shadow-2xl">
-            <v-carousel-item src="public/history/ngong1.jpg" />
-            <v-carousel-item src="public/history/ngong2.jpg" />
-          </v-carousel>
-        </v-col>
-        <v-col cols="12" md="6">
+        <v-col cols="12" md="12">
           <h3 class="tribe-title">7. Ngong Hills – Nairobi</h3>
           <p class="tribe-text">
             The “Knuckles of God” that Karen Blixen immortalised.<br>
@@ -149,10 +118,7 @@ import { ref } from 'vue'
 
       <!-- 8. Shimoni Slave Caves – Kwale -->
       <v-row class="mb-16 align-center culture-entry fade-in">
-        <v-col cols="12" md="6" order-md="2">
-          <v-img src="public/history/shimoni.jpg" class="rounded-xl shadow-2xl" height="520" cover />
-        </v-col>
-        <v-col cols="12" md="6" order-md="1">
+        <v-col cols="12" md="12" order-md="1">
           <h3 class="tribe-title">8. Shimoni Slave Caves – Kwale</h3>
           <p class="tribe-text">
             Dark coral caverns where thousands of enslaved Africans were held before being shipped across the Indian Ocean.<br>
@@ -166,10 +132,7 @@ import { ref } from 'vue'
 
       <!-- 9. Rhino Ark – Aberdare Ranges -->
       <v-row class="mb-16 align-center culture-entry fade-in">
-        <v-col cols="12" md="6">
-          <v-img src="public/history/rhino-ark.jpg" class="rounded-xl shadow-2xl" height="520" cover />
-        </v-col>
-        <v-col cols="12" md="6">
+        <v-col cols="12" md="12">
           <h3 class="tribe-title">9. Rhino Ark – Aberdare Ranges</h3>
           <p class="tribe-text">
             The world’s longest wildlife fence — 400 km built by hand to protect the last mountain bongo and black rhinos.<br>
@@ -182,10 +145,7 @@ import { ref } from 'vue'
 
       <!-- 10. Baden-Powell Museum – Nyeri -->
       <v-row class="mb-16 align-center culture-entry fade-in">
-        <v-col cols="12" md="6" order-md="2">
-          <v-img src="public/history/baden-powell.jpg" class="rounded-xl shadow-2xl" height="520" cover />
-        </v-col>
-        <v-col cols="12" md="6" order-md="1">
+        <v-col cols="12" md="12" order-md="1">
           <h3 class="tribe-title">10. Baden-Powell Museum – Nyeri</h3>
           <p class="tribe-text">
             The final home of Lord Robert Baden-Powell, founder of the Scout Movement.<br>
@@ -251,8 +211,8 @@ import { ref } from 'vue'
 
 .overlay { position: absolute; inset: 0; background: linear-gradient(transparent 40%, rgba(0,0,0,0.8)); }
 
-.hero-title { font-size: 6.rem; font-weight: 900; letter-spacing: 4px; text-shadow: 4px 4px 20px rgba(0,0,0,0.8); }
-.hero-subtitle { font-size: 2.2rem; font-weight: 300; letter-spacing: 8px; margin-top: 1rem; opacity: 0.95; }
+.title { font-size: 6.rem; font-weight: 900; letter-spacing: 4px; text-shadow: 4px 4px 20px rgba(0,0,0,0.8); }
+.subtitle { font-size: 2.2rem; font-weight: 300; letter-spacing: 8px; margin-top: 1rem; opacity: 0.95; }
 
 .underline-elegant { position: relative; display: inline-block; padding-bottom: 12px; }
 .underline-elegant::after {

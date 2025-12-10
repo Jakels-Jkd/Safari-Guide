@@ -19,15 +19,7 @@ import { ref } from 'vue'
 
       <!-- 1. Chalbi Desert -->
       <v-row class="d-flex align-center my-16">
-        <v-col cols="12" md="6">
-          <v-carousel height="520" show-arrows cycle interval="4000" hide-delimiter-background class="rounded-xl elevation-20">
-            <v-carousel-item src="public/desert/chalbi1.jpg" />
-            <v-carousel-item src="public/desert/chalbi2.jpg" />
-            <v-carousel-item src="public/desert/chalbi3.jpg" />
-          </v-carousel>
-        </v-col>
-
-        <v-col cols="12" md="6">
+        <v-col cols="12" md="12">
           <h3 class="card-subtitles text-amber-800">1. Chalbi Desert</h3>
           <p class="tribe-description">
             Kenya’s only true desert. <br>
@@ -42,10 +34,10 @@ import { ref } from 'vue'
 
       <!-- 2. Lake Turkana -->
       <v-row class="d-flex align-center my-16">
-        <v-col cols="12" md="6" order-md="2">
-          <v-img src="public/desert/turkana.jpg" class="rounded-xl elevation-20" height="520" cover />
+        <v-col cols="12" md="12" order-md="2">
+          <v-img src="public/destinations/destinations2/Screenshot 2025-10-19 235315.png" class="rounded-xl elevation-20" height="520" cover />
         </v-col>
-        <v-col cols="12" md="6" order-md="1">
+        <v-col cols="12" md="12" order-md="1">
           <h3 class="card-subtitles text-teal-800">2. Lake Turkana – The Jade Sea</h3>
           <p class="tribe-description">
             The largest desert lake on Earth. <br>
@@ -59,14 +51,7 @@ import { ref } from 'vue'
 
       <!-- 3. Samburu & Shaba -->
       <v-row class="d-flex align-center my-16">
-        <v-col cols="12" md="6">
-          <v-carousel height="520" show-arrows cycle interval="4000" class="rounded-xl elevation-20">
-            <v-carousel-item src="public/desert/samburu1.jpg" />
-            <v-carousel-item src="public/desert/samburu2.jpg" />
-            <v-carousel-item src="public/desert/samburu3.jpg" />
-          </v-carousel>
-        </v-col>
-        <v-col cols="12" md="6">
+        <v-col cols="12" md="12">
           <h3 class="card-subtitles text-orange-900">3. Samburu, Shaba & Kalama</h3>
           <p class="tribe-description">
             The land of the “Special Five”: Grevy’s zebra with stripes like lightning, the long-necked gerenuk, Somali ostrich, reticulated giraffe, and beisa oryx. <br>
@@ -79,10 +64,7 @@ import { ref } from 'vue'
 
       <!-- 4. Loiyangalani Oasis -->
       <v-row class="d-flex align-center my-16">
-        <v-col cols="12" md="6" order-md="2">
-          <v-img src="public/desert/loiyangalani.jpg" class="rounded-xl elevation-20" height="520" cover />
-        </v-col>
-        <v-col cols="12" md="6" order-md="1">
+        <v-col cols="12" md="12" order-md="1">
           <h3 class="card-subtitles text-green-900">4. Loiyangalani – The Oasis</h3>
           <p class="tribe-description">
             A miracle of palm trees rising from pure desert. <br>
@@ -95,10 +77,7 @@ import { ref } from 'vue'
 
       <!-- 5. Suguta Valley -->
       <v-row class="d-flex align-center my-16">
-        <v-col cols="12" md="6">
-          <v-img src="public/desert/suguta.jpg" class="rounded-xl elevation-20" height="520" cover />
-        </v-col>
-        <v-col cols="12" md="6">
+        <v-col cols="12" md="12">
           <h3 class="card-subtitles text-purple-900">5. Suguta Valley – The Forgotten Place</h3>
           <p class="tribe-description">
             Kenya’s hottest, driest, most unreachable valley. <br>

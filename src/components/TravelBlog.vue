@@ -1,251 +1,241 @@
-<!-- src/views/TravelBlog.vue -->
-<script setup>
-import { ref, computed } from 'vue'
-
-// Sample blog data – replace with your backend later
-const posts = ref([
-  {
-    id: 1,
-    title: "Why July is the BEST Month for the Great Migration",
-    excerpt: "2.1 million wildebeest thunder across the Mara River. Here's exactly where to be and when.",
-    author: "Amina Okello",
-    date: "2025-07-15",
-    category: "Great Migration",
-    readTime: "6 min",
-    featured: true,
-    image: "https://images.unsplash.com/photo-1564769625391-9d2e85e9d2ec?w=1200&h=800&fit=crop"
-  },
-  {
-    id: 2,
-    title: "I Spent a Night Alone in the Bush with Only Lions for Company",
-    excerpt: "No tent. No gun. Just me, a blanket, and the King of the Jungle 20 meters away.",
-    author: "Jake Peralta",
-    date: "2025-06-28",
-    category: "Adventure Stories",
-    readTime: "12 min",
-    featured: false,
-    image: "https://images.unsplash.com/photo-1547471080-7bb4a9f5783e?w=1200&h=800&fit=crop"
-  },
-  {
-    id: 3,
-    title: "The Secret Beach in Watamu Where Turtles Come to Lay Eggs at Midnight",
-    excerpt: "Local fishermen guard this beach with their lives. I was allowed to witness something magical.",
-    author: "Fatima Ali",
-    date: "2025-06-10",
-    category: "Marine Safari",
-    readTime: "8 min",
-    featured: true,
-    image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200&h=800&fit=crop"
-  },
-  {
-    id: 4,
-    title: "How to Spot the Elusive Leopard in Tsavo (From Someone Who Saw 7 in One Week)",
-    excerpt: "They say leopards own the night. I learned they also own the sausage tree at 3 PM.",
-    author: "David Kimani",
-    date: "2025-05-22",
-    category: "Wildlife Tips",
-    readTime: "10 min",
-    featured: false,
-    image: "https://images.unsplash.com/photo-1597696856084-8ca1af1e2579?w=1200&h=800&fit=crop"
-  }
-])
-
-const categories = ["All", "Great Migration", "Adventure Stories", "Marine Safari", "Wildlife Tips", "Conservation"]
-const selectedCategory = ref("All")
-const searchQuery = ref("")
-
-const filteredPosts = computed(() => {
-  return posts.value.filter(post => {
-    const matchesCategory = selectedCategory.value === "All" || post.category === selectedCategory.value
-    const matchesSearch = post.title.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-                         post.excerpt.toLowerCase().includes(searchQuery.value.toLowerCase())
-    return matchesCategory && matchesSearch
-  })
-})
-</script>
-
 <template>
-  <!-- HERO -->
-  <div class="blog-hero relative h-screen">
-    <v-parallax
-      src="https://images.unsplash.com/photo-1516026672321-7b2d8f8c7b8e?w=2400&h=1600&fit=crop"
-      height="100%"
-    >
-      <div class="absolute inset-0 bg-gradient-to-b from-black/70 to-black/30"></div>
-      <v-container class="fill-height d-flex align-center">
-        <div class="text-center text-white">
-          <h1 class="text-h2 md:text-h1 font-black mb-6 tracking-tight">
-            Safari Guide Stories
-          </h1>
-          <p class="text-h5 md:text-h4 max-w-4xl mx-auto opacity-90">
-            Real tales from the bush, the reef, and everywhere in between
+  <div class="blog-page">
+
+    <div class="page">
+      <div class="overlay"></div>
+      <div class="content">
+        <h1 class="title">TALES FROM THE BUSH</h1>
+        <p class="subtitle">Real Stories. Real Kenya. Real Wild.</p>
+        <p class="byline">By Safari Guide Kenya Explorers</p>
+      </div>
+    </div>
+
+    <v-container class="py-20 px-6 max-w-5xl">
+
+      <!-- POST 1: The Night the Lions Came to Camp -->
+      <div class="blog-post mb-32">
+        <h2 class="post-title">The Night the Lions Came to Camp</h2>
+        <p class="post-meta">Maasai Mara • December 2025 • 3 min read</p>
+
+        <v-img src="public/destinations/wildlifesafaris/lions/lion chasing prey.png" height="500" cover class="rounded-xl mb-10 shadow-2xl" />
+
+        <div class="post-body">
+          <p>It was 2:17 AM when the first roar hit the tent like a physical force.</p>
+          <p>Not the distant rumble you hear on TV. This was close. Inside-your-chest close.</p>
+          <p>We were in a mobile camp deep in the Mara Triangle. No fences. No electricity. Just canvas between us and whatever decided to walk through.</p>
+          <p>Then came the second roar — deeper, closer, answered by a third from the opposite side. They were circling.</p>
+          <p>The Maasai askari outside whispered "Simba" and tapped his spear on the ground — the signal to stay dead still.</p>
+          <p>For forty-seven minutes (I counted), three male lions argued over territory right through our camp. One walked so close I could smell him — hot breath, old blood, pure power.</p>
+          <p>When they finally moved on, the silence that followed was heavier than the roars.</p>
+          <p>That night, I didn’t sleep. I listened. And I understood: we are guests here. The land doesn’t belong to us — we belong to it.</p>
+          <p class="post-quote">“In Kenya, you don’t find the wild. The wild finds you.”</p>
+        </div>
+      </div>
+      <v-divider class="blog-divider" />
+
+      <!-- POST 2: Swimming with Whale Sharks in Watamu -->
+      <div class="blog-post mb-32">
+        <h2 class="post-title">I Swam with a Bus-Sized Gentle Giant</h2>
+        <p class="post-meta">Watamu Marine Park • November 2025 • 4 min read</p>
+
+        <v-carousel height="520" cycle interval="6000" show-arrows class="rounded-xl mb-10 shadow-2xl">
+          <v-carousel-item src="public/destinations/travelblog/Screenshot 2025-12-10 063300.png" cover />
+          <v-carousel-item src="public/destinations/travelblog/Screenshot 2025-12-10 063210.png" cover />
+        </v-carousel>
+
+        <div class="post-body">
+          <p>The captain cut the engine and whispered “Ndovu wa baharini” — sea elephant.</p>
+          <p>Then I saw it. A whale shark longer than our boat, gliding beneath us like a slow-motion submarine.</p>
+          <p>We slipped into the water. No cages. No fear. Just me and a 12-meter spotted monster that eats only plankton.</p>
+          <p>It turned toward me — mouth wide open like a cave — and I froze. Then it gently banked away, brushing my leg with its tail the size of a door.</p>
+          <p>For ten minutes, I swam alongside the largest fish on Earth. It didn’t care I was there. I was just another piece of plankton in its universe.</p>
+          <p>When it finally disappeared into the blue, I floated on the surface and cried inside my mask.</p>
+          <p class="post-quote">“Some moments don’t fit in cameras. They only fit in souls.”</p>
+        </div>
+      </div>
+      <v-divider class="blog-divider" />
+
+      <!-- POST 3: The Day I Became Maasai for 24 Hours -->
+      <div class="blog-post mb-32">
+        <h2 class="post-title">They Made Me a Warrior in One Day</h2>
+        <p class="post-meta">Loita Hills • October 2025 • 5 min read</p>
+
+        <v-img src="public/destinations/cultures/degleex-ganzorig-0kIbj3yEvOM-unsplash.jpg" height="520" cover class="rounded-xl mb-10 shadow-2xl" />
+
+        <div class="post-body">
+          <p>They took my phone, my watch, my shoes.</p>
+          <p>Gave me a shuka, a spear, and a name: “Ole Ntimama” — the fearless one.</p>
+          <p>I walked 30km with warriors half my age who laughed when I complained. Milked cows at 4 AM. Learned to throw a spear (badly). Drank fresh blood mixed with milk (surprisingly sweet).</p>
+          <p>At night, around the fire, an elder told me: “You think you came to see Maasai. But we have been waiting for you.”</p>
+          <p>The next morning, they painted my face with ochre and said: “Now you carry our story.”</p>
+          <p>I left with blisters on my feet and fire in my heart.</p>
+          <p class="post-quote">“Some cultures don’t teach you who they are.<br>They remind you who you were always meant to be.”</p>
+        </div>
+      </div>
+      <v-divider class="blog-divider" />
+
+      <!-- POST 4: The Ghost Forest of Diani -->
+      <div class="blog-post mb-32">
+        <h2 class="post-title">I Found a Forest That Only Exists at Low Tide</h2>
+        <p class="post-meta">Diani Beach • September 2025 • 3 min read</p>
+
+        <v-carousel height="520" cycle interval="5000" show-arrows class="rounded-xl mb-10 shadow-2xl">
+          <v-carousel-item src="public/destinations/travelblog/Screenshot 2025-12-10 062822.png" cover />
+          <v-carousel-item src="public/destinations/travelblog/Screenshot 2025-12-10 062837.png" cover />
+        </v-carousel>
+
+        <div class="post-body">
+          <p>Every day at low tide, the ocean pulls back its curtain and reveals a forest of ancient coral skeletons.</p>
+          <p>Trees that died 4,000 years ago when sea levels rose. Now they stand like white ghosts in the sand.</p>
+          <p>I walked among them barefoot. The coral cut my feet. The sun burned my back. The tide started coming in fast.</p>
+          <p>I ran laughing as the ocean reclaimed its dead forest — wave by wave, tree by tree.</p>
+          <p class="post-quote">“Some places only exist when the sea forgets to hide them.”</p>
+        </div>
+      </div>
+
+      <!-- NEWSLETTER SECTION — EXACTLY AS YOU WANTED -->
+      <div class="newsletter-section py-20 mt-20">
+        <v-container class="text-center">
+          <h2 class="text-h3 md:text-h2 font-black text-white mb-6">
+            Never Miss a Story
+          </h2>
+          <p class="text-h5 text-white mb-10 opacity-90">
+            Get wild tales delivered straight from the bush to your inbox
           </p>
-          <div class="mt-12">
+          <div class="max-w-2xl mx-auto">
             <v-text-field
-              v-model="searchQuery"
-              prepend-inner-icon="mdi-magnify"
-              label="Search stories..."
-              variant="solo"
-              class="max-w-lg mx-auto"
+              label="Your email"
+              variant="outlined"
+              append-inner-icon="mdi-send"
               bg-color="white"
-              rounded
-              flat
+              class="rounded-full"
+              placeholder="name@wildsoul.com"
             />
           </div>
-        </div>
-      </v-container>
-    </v-parallax>
-  </div>
-
-  <!-- FEATURED POST -->
-  <v-container class="my-16">
-    <h2 class="text-h3 font-bold text-center mb-12">Featured Story</h2>
-    <v-card
-      v-if="posts.find(p => p.featured)"
-      class="featured-card rounded-xl overflow-hidden"
-      elevation="24"
-      @click="$router.push('/blog/' + posts.find(p => p.featured).id)"
-    >
-      <v-img
-        :src="posts.find(p => p.featured).image"
-        height="600"
-        cover
-      >
-        <div class="gradient-overlay"></div>
-        <div class="absolute bottom-0 left-0 p-8 text-white">
-          <v-chip color="orange" class="mb-4">Featured</v-chip>
-          <h3 class="text-h2 md:text-h1 font-black mb-4">
-            {{ posts.find(p => p.featured).title }}
-          </h3>
-          <p class="text-h5 opacity-90 max-w-3xl">
-            {{ posts.find(p => p.featured).excerpt }}
-          </p>
-          <div class="mt-6 flex items-center gap-6 text-lg">
-            <span>{{ posts.find(p => p.featured).author }}</span>
-            <span>•</span>
-            <span>{{ posts.find(p => p.featured).readTime }}</span>
-          </div>
-        </div>
-      </v-img>
-    </v-card>
-  </v-container>
-
-  <!-- CATEGORIES -->
-  <v-container class="mb-12">
-    <div class="d-flex flex-wrap justify-center gap-3">
-      <v-chip
-        v-for="cat in categories"
-        :key="cat"
-        :color="selectedCategory === cat ? 'primary' : 'grey-lighten-2'"
-        @click="selectedCategory = cat"
-        size="large"
-        class="px-6"
-      >
-        {{ cat }}
-      </v-chip>
-    </div>
-  </v-container>
-
-  <!-- BLOG GRID -->
-  <v-container>
-    <v-row>
-      <v-col
-        v-for="post in filteredPosts"
-        :key="post.id"
-        cols="12"
-        md="6"
-        lg="4"
-      >
-        <v-card
-          class="blog-card h-100 rounded-xl overflow-hidden transition-all"
-          elevation="8"
-          hover
-          @click="$router.push('/blog/' + post.id)"
-        >
-          <v-img
-            :src="post.image"
-            height="280"
-            cover
-            class="blog-img"
-          >
-            <div class="gradient-overlay"></div>
-            <v-chip class="absolute top-4 left-4" color="orange" small>
-              {{ post.category }}
-            </v-chip>
-          </v-img>
-
-          <v-card-title class="text-h6 font-bold line-clamp-2">
-            {{ post.title }}
-          </v-card-title>
-
-          <v-card-text class="text-grey-darken-2">
-            {{ post.excerpt }}
-          </v-card-text>
-
-          <v-card-actions class="pa-4">
-            <div class="flex justify-between w-full text-sm">
-              <span class="font-medium">{{ post.author }}</span>
-              <span>{{ post.date.split('-').slice(1).join('/') }} • {{ post.readTime }}</span>
-            </div>
-          </v-card-actions>
-        </v-card>
-      </v-col>
-    </v-row>
-  </v-container>
-
-  <!-- NEWSLETTER CTA -->
-  <div class="newsletter-section py-20 mt-20">
-    <v-container class="text-center">
-      <h2 class="text-h3 md:text-h2 font-black text-white mb-6">
-        Never Miss a Story
-      </h2>
-      <p class="text-h5 text-white mb-10 opacity-90">
-        Get wild tales delivered straight from the bush to your inbox
-      </p>
-      <div class="max-w-2xl mx-auto">
-        <v-text-field
-          label="Your email"
-          variant="outlined"
-          append-inner-icon="mdi-send"
-          bg-color="white"
-          class="rounded-full"
-          placeholder="name@wildsoul.com"
-        />
+        </v-container>
       </div>
+
     </v-container>
+
+    <!-- FOOTER -->
+    <footer class="blog-footer">
+      <p class="text-h5">© 2025 Safari Guide Kenya — Stories That Stay With You Forever</p>
+      <p class="highlight">These are not travel stories.<br>These are love letters to Kenya.</p>
+    </footer>
   </div>
 </template>
 
+<script setup>
+import { ref } from 'vue'
+</script>
+
 <style scoped>
-.blog-hero { position: relative; }
-.gradient-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(transparent 40%, rgba(0,0,0,0.8));
+.blog-page {
+  background: linear-gradient(to bottom, #fffdf7, #fff8e8, #fff3e0);
+  min-height: 100vh;
+  font-family: 'Georgia', serif;
 }
-.featured-card:hover {
-  transform: translateY(-12px);
-  box-shadow: 0 30px 60px rgba(0,0,0,0.4) !important;
+
+.page {
+  position: relative;
+  height: 90vh;
+  background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.85));
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: white;
 }
-.blog-card {
-  transition: all 0.4s ease;
+
+.title {
+  font-size: 7rem;
+  font-weight: 900;
+  letter-spacing: 8px;
+  text-shadow: 8px 8px 40px rgba(0,0,0,0.9);
 }
-.blog-card:hover {
-  transform: translateY(-8px);
+
+.subtitle {
+  font-size: 3rem;
+  font-weight: 300;
+  letter-spacing: 10px;
+  margin-top: 1rem;
 }
-.blog-card:hover .blog-img {
-  transform: scale(1.08);
+
+.byline {
+  font-size: 1.8rem;
+  font-style: italic;
+  margin-top: 2rem;
+  opacity: 0.9;
 }
-.blog-img {
-  transition: transform 0.6s ease;
+
+.post-title {
+  font-size: 4.5rem;
+  font-weight: 900;
+  color: #8B4513;
+  text-align: center;
+  margin-bottom: 1rem;
+  text-shadow: 3px 3px 15px rgba(0,0,0,0.2);
 }
+
+.post-meta {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #A0522D;
+  margin-bottom: 3rem;
+  font-style: italic;
+}
+
+.post-body {
+  font-size: 1.5rem;
+  line-height: 2.4;
+  background: rgba(255,255,255,0.95);
+  padding: 4rem;
+  border-radius: 40px;
+  box-shadow: 0 25px 60px rgba(0,0,0,0.15);
+  backdrop-filter: blur(10px);
+  border: 3px solid rgba(139,69,19,0.2);
+}
+
+.post-quote {
+  display: block;
+  margin-top: 3rem;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #B8860B;
+  font-style: italic;
+  text-align: center;
+  text-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+}
+
+.blog-divider {
+  height: 8px;
+  background: linear-gradient(90deg, transparent, #D2691E, #B8860B, #D2691E, transparent);
+  border: none;
+  margin: 8rem 0;
+  border-radius: 10px;
+}
+
 .newsletter-section {
-  background: linear-gradient(135deg, #1B5E20 0%, #2E7D32 100%);
+  background: linear-gradient(135deg, #1b5e20, #2e7d32, #388e3c);
+  border-radius: 50px;
+  margin: 8rem 4rem;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.3);
 }
-.line-clamp-2 {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+
+.blog-footer {
+  background: linear-gradient(135deg, #8B4513, #A0522D, #CD853F);
+  color: white;
+  padding: 6rem 2rem;
+  text-align: center;
+}
+
+.blog-footer .highlight {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-top: 2rem;
+  text-shadow: 3px 3px 15px rgba(0,0,0,0.7);
+  line-height: 1.8;
+  color: #FFF8DC;
 }
 </style>

@@ -6,8 +6,7 @@ import { ref } from 'vue'
 <template>
   <div class="forest-page">
 
-    <!-- HERO – Breathing green fire -->
-    <div class="hero">
+    <div class="page">
       <h2 class="title">ANCIENT FORESTS OF KENYA</h2>
       <p class="subtitle">Where the Earth Still Remembers Magic</p>
     </div>
@@ -19,14 +18,7 @@ import { ref } from 'vue'
 
       <!-- 1. Kakamega Forest -->
       <v-row class="d-flex align-center my-16">
-        <v-col cols="12" md="6">
-          <v-carousel height="520" show-arrows cycle interval="4500" hide-delimiter-background class="rounded-xl elevation-20">
-            <v-carousel-item src="public/forests/kakamega1.jpg" cover />
-            <v-carousel-item src="public/forests/kakamega2.jpg" cover />
-            <v-carousel-item src="public/forests/kakamega3.jpg" cover />
-          </v-carousel>
-        </v-col>
-        <v-col cols="12" md="6">
+        <v-col cols="12" md="12">
           <h3 class="card-subtitles text-green-900">1. Kakamega Rainforest</h3>
           <p class="tribe-description">
             The only tropical rainforest in Kenya. <br>
@@ -35,13 +27,20 @@ import { ref } from 'vue'
             When it rains, the forest sings — every leaf becomes a drum for the sky.
           </p>
         </v-col>
+        <v-col cols="12" md="12">
+          <v-carousel height="520" show-arrows cycle interval="4500" hide-delimiter-background class="rounded-xl elevation-20">
+            <v-carousel-item src="public/destinations/forest/Screenshot 2025-12-10 084306.png" cover />
+            <v-carousel-item src="public/destinations/forest/Screenshot 2025-12-10 084328.png" cover />
+            <v-carousel-item src="public/destinations/forest/Screenshot 2025-12-10 084348.png" cover />
+          </v-carousel>
+        </v-col>
       </v-row>
       <v-divider thickness="4" color="#2e7d32" class="my-12" />
 
       <!-- 2. Arabuko Sokoke Forest -->
       <v-row class="d-flex align-center my-16">
         <v-col cols="12" md="6" order-md="2">
-          <v-img src="public/forests/arabuko.jpg" class="rounded-xl elevation-20" height="520" cover />
+          <v-img src="public/coverImages/man-a-stylist-uQa4DN8HAb0-unsplash.jpg" class="rounded-xl elevation-20" height="520" cover />
         </v-col>
         <v-col cols="12" md="6" order-md="1">
           <h3 class="card-subtitles text-teal-900">2. Arabuko Sokoke Coastal Forest</h3>
@@ -58,11 +57,8 @@ import { ref } from 'vue'
       <!-- 3. Aberdare Forest -->
       <v-row class="d-flex align-center my-16">
         <v-col cols="12" md="6">
-          <v-carousel height="520" show-arrows cycle interval="4500" class="rounded-xl elevation-20">
-            <v-carousel-item src="public/forests/aberdare1.jpg" cover />
-            <v-carousel-item src="public/forests/aberdare2.jpg" cover />
-            <v-carousel-item src="public/forests/aberdare3.jpg" cover />
-          </v-carousel>
+                   <v-img src="public/scenic/Screenshot 2025-12-10 080741.png" class="rounded-xl elevation-20" height="520" cover />
+
         </v-col>
         <v-col cols="12" md="6">
           <h3 class="card-subtitles text-emerald-900">3. Aberdare Cloud Forest</h3>
@@ -78,10 +74,7 @@ import { ref } from 'vue'
 
       <!-- 4. Karura Forest -->
       <v-row class="d-flex align-center my-16">
-        <v-col cols="12" md="6" order-md="2">
-          <v-img src="public/forests/karura.jpg" class="rounded-xl elevation-20" height="520" cover />
-        </v-col>
-        <v-col cols="12" md="6" order-md="1">
+        <v-col cols="12" md="12" order-md="1">
           <h3 class="card-subtitles text-lime-900">4. Karura Forest – Nairobi’s Lung</h3>
           <p class="tribe-description">
             1,000 hectares of green in the heart of the city. <br>
@@ -95,10 +88,7 @@ import { ref } from 'vue'
 
       <!-- 5. Mau Forest Complex -->
       <v-row class="d-flex align-center my-16">
-        <v-col cols="12" md="6">
-          <v-img src="public/forests/mau.jpg" class="rounded-xl elevation-20" height="520" cover />
-        </v-col>
-        <v-col cols="12" md="6">
+        <v-col cols="12" md="12">
           <h3 class="card-subtitles text-olive-900">5. Mau Forest – Mother of Rivers</h3>
           <p class="tribe-description">
             The largest indigenous forest in East Africa. <br>
@@ -110,7 +100,6 @@ import { ref } from 'vue'
         </v-col>
       </v-row>
 
-      <!-- FINAL MESSAGE – Pure forest soul -->
       <div class="my-20 text-center">
         <h2 class="display-1 font-weight-black mb-8" style="color:#1b5e20; text-decoration: underline;">
           This Is Not A Walk In The Woods
@@ -138,7 +127,7 @@ import { ref } from 'vue'
       </div>
     </v-container>
 
-    <!-- FOOTER – Deep green & gold -->
+    <!-- FOOTER  -->
     <div class="footer">
       <p>© 2025 Safari Guide Kenya</p>
       <div class="contact">
@@ -160,9 +149,9 @@ import { ref } from 'vue'
   min-height: 100vh;
 }
 
-.hero {
+.page {
   position: relative;
-  background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.8)), url('public/forests/hero.jpg') center/cover no-repeat fixed;
+  background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.8)), url('public/forests/page.jpg') center/cover no-repeat fixed;
   height: 55vh;
   display: flex;
   flex-direction: column;

@@ -1,6 +1,6 @@
-<!-- src/views/TourCompanies.vue — BOOKING.COM STYLE (FIXED & PERFECT) -->
 <script>
 import { TourCompanies } from "../router/TourCompanies.js";
+import axios from "axios";
 
 export default {
   data() {
@@ -13,10 +13,10 @@ export default {
       regions: ["All Regions", "Nairobi", "Mombasa", "Maasai Mara", "Amboseli", "Tsavo", "Samburu", "Laikipia", "Diani", "Lamu"],
       priceRanges: [
         { text: "All Prices", value: null },
-        { text: "Under KSh 40,000", value: { min: 0, max: 40000 } },
-        { text: "KSh 40,000 – 100,000", value: { min: 40000, max: 100000 } },
-        { text: "KSh 100,000 – 200,000", value: { min: 100000, max: 200000 } },
-        { text: "KSh 200,000+", value: { min: 200000, max: Infinity } }
+        { text: "Under $ 40,000", value: { min: 0, max: 40000 } },
+        { text: "$ 400 – 1000", value: { min: 400, max: 1000 } },
+        { text: "$ 1000 – 2000", value: { min: 1000, max: 2000 } },
+        { text: "$ 2000+", value: { min: 2000, max: Infinity } }
       ],
       ratings: [
         { text: "All Ratings", value: null },
@@ -24,54 +24,56 @@ export default {
         { text: "4.5+ Wonderful", value: 4.5 },
         { text: "4.8+ Exceptional", value: 4.8 }
       ],
-      showFilters: true
+      showFilters: true,
+
+      bookingDialog: false,
+      loginPrompt: false,
+      selectedCompany: null,
+      bookingForm: {
+        date: "",
+        adults: 2,
+        children: 0,
+        requests: ""
+      },
+      today: new Date().toISOString().split("T")[0],
+      bookingLoading: false
     };
   },
   computed: {
     filteredCompanies() {
       let results = [...this.companies];
 
-      if (this.searchQuery && this.searchQuery.trim()) {
-        const query = this.searchQuery.toLowerCase().trim();
-        results = results.filter(company => 
-          company.name.toLowerCase().includes(query) ||
-          company.location.toLowerCase().includes(query) ||
-          (company.description && company.description.toLowerCase().includes(query))
+      if (this.searchQuery?.trim()) {
+        const q = this.searchQuery.toLowerCase();
+        results = results.filter(c =>
+          c.name.toLowerCase().includes(q) ||
+          c.location.toLowerCase().includes(q) ||
+          (c.description && c.description.toLowerCase().includes(q))
         );
       }
 
       if (this.selectedRegion && this.selectedRegion !== "All Regions") {
-        results = results.filter(company => 
-          company.location.toLowerCase().includes(this.selectedRegion.toLowerCase())
+        results = results.filter(c => 
+          c.location.toLowerCase().includes(this.selectedRegion.toLowerCase())
         );
       }
 
       if (this.selectedPriceRange) {
-        results = results.filter(company => {
-          const price = this.extractPrice(company.price);
-          return price >= this.selectedPriceRange.min && price <= this.selectedPriceRange.max;
+        results = results.filter(c => {
+          const price = this.extractPrice(c.price);
+          return price >= this.selectedPriceRange.min && 
+                 (this.selectedPriceRange.max === Infinity || price <= this.selectedPriceRange.max);
         });
       }
 
       if (this.selectedRating !== null) {
-        results = results.filter(company => {
-          const rating = parseFloat(company.rating);
-          return rating >= this.selectedRating;
-        });
+        results = results.filter(c => parseFloat(c.rating) >= this.selectedRating);
       }
 
       return results;
     },
     resultsCount() {
       return this.filteredCompanies.length;
-    },
-    hasActiveFilters() {
-      return (
-        (this.searchQuery && this.searchQuery.trim()) ||
-        (this.selectedRegion && this.selectedRegion !== "All Regions") ||
-        this.selectedPriceRange !== null ||
-        this.selectedRating !== null
-      );
     }
   },
   methods: {
@@ -90,6 +92,67 @@ export default {
     },
     toggleFilters() {
       this.showFilters = !this.showFilters;
+    },
+
+    openBookingDialog(company) {
+      if (!localStorage.getItem("token")) {
+        this.loginPrompt = true;
+        return;
+      }
+      this.selectedCompany = company;
+      this.bookingForm = { date: "", adults: 2, children: 0, requests: "" };
+      this.bookingDialog = true;
+    },
+
+    async confirmBooking() {
+      this.bookingLoading = true;
+
+      try {
+        await axios.post("http://127.0.0.1:8000/api/v1/tour-bookings", {
+          tour_company_id: this.selectedCompany.id,
+          tour_date: this.bookingForm.date,
+          guests: Number(this.bookingForm.adults) + Number(this.bookingForm.children),
+          special_requests: this.bookingForm.requests || null,
+        }, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`
+          }
+        });
+
+        const allBookings = JSON.parse(localStorage.getItem('lastBookings') || '[]');
+        allBookings.unshift({
+          type: 'tour',
+          name: this.selectedCompany.name,
+          location: this.selectedCompany.location,
+          image: this.selectedCompany.image,
+          tourDate: this.bookingForm.date,
+          adults: Number(this.bookingForm.adults),
+          children: Number(this.bookingForm.children),
+          guests: Number(this.bookingForm.adults) + Number(this.bookingForm.children),
+          requests: this.bookingForm.requests,
+          bookedAt: new Date().toISOString()
+        });
+        localStorage.setItem('lastBookings', JSON.stringify(allBookings));
+
+        localStorage.setItem("lastBooking", JSON.stringify({
+          type: 'tour',
+          companyName: this.selectedCompany.name,
+          companyImage: this.selectedCompany.image,
+          tourDate: this.bookingForm.date,
+          adults: Number(this.bookingForm.adults),
+          children: Number(this.bookingForm.children),
+          guests: Number(this.bookingForm.adults) + Number(this.bookingForm.children),
+          requests: this.bookingForm.requests
+        }));
+
+        this.bookingDialog = false;
+        this.$router.push("/bookings");
+
+      } catch (err) {
+        alert("Booking failed: " + (err.response?.data?.message || "Try again"));
+      } finally {
+        this.bookingLoading = false;
+      }
     }
   }
 };
@@ -97,10 +160,9 @@ export default {
 
 <template>
   <v-container fluid class="tour-companies-page pa-0 bg-gray-50 min-h-screen">
-    <!-- Hero Section -->
-    <div class="hero-section d-flex align-center justify-center relative">
+    <div class="section d-flex align-center justify-center relative">
       <div class="overlay"></div>
-      <div class="text-center hero-content relative z-10">
+      <div class="text-center content relative z-10">
         <h1 class="text-h3 text-md-h2 font-weight-bold white--text mb-4">
           Kenyan Safari Companies
         </h1>
@@ -108,7 +170,6 @@ export default {
           Discover trusted, locally owned tour operators across Kenya
         </p>
         
-        <!-- Hero Search Bar -->
         <v-text-field
           v-model="searchQuery"
           placeholder="Search by company name, location..."
@@ -118,13 +179,12 @@ export default {
           rounded
           clearable
           prepend-inner-icon="mdi-magnify"
-          class="hero-search elevation-8"
-          aria-label="Search safari companies"
+          class="search elevation-8"
         />
       </div>
     </div>
 
-    <!-- Filter Section -->
+    <!-- FILTERS -->
     <v-container class="filter-section mt-n12 relative z-10">
       <v-row justify="center">
         <v-col cols="12" md="10">
@@ -133,35 +193,16 @@ export default {
               <div>
                 <h3 class="text-h6 font-weight-bold">
                   Filter Companies
-                  <v-chip
-                    v-if="resultsCount !== companies.length"
-                    class="ml-2"
-                    color="primary"
-                    size="small"
-                  >
+                  <v-chip v-if="resultsCount !== companies.length" class="ml-2" color="primary" size="small">
                     {{ resultsCount }} of {{ companies.length }}
                   </v-chip>
                 </h3>
               </div>
               <div>
-                <v-btn
-                  v-if="hasActiveFilters"
-                  color="error"
-                  variant="text"
-                  size="small"
-                  @click="clearFilters"
-                  prepend-icon="mdi-filter-remove"
-                  aria-label="Clear all filters"
-                >
+                <v-btn v-if="hasActiveFilters" color="error" variant="text" size="small" @click="clearFilters">
                   Clear Filters
                 </v-btn>
-                <v-btn
-                  icon
-                  size="small"
-                  @click="toggleFilters"
-                  class="ml-2"
-                  aria-label="Toggle filters"
-                >
+                <v-btn icon size="small" @click="toggleFilters" class="ml-2">
                   <v-icon>{{ showFilters ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
                 </v-btn>
               </div>
@@ -175,21 +216,10 @@ export default {
                       v-model="selectedRegion"
                       label="Region"
                       :items="regions"
-                      outlined
-                      dense
-                      clearable
+                      outlined dense clearable
                       prepend-inner-icon="mdi-map-marker"
-                      aria-label="Filter by region"
-                    >
-                      <template v-slot:prepend-item>
-                        <v-list-item @click="selectedRegion = null">
-                          <v-list-item-title>All Regions</v-list-item-title>
-                        </v-list-item>
-                        <v-divider></v-divider>
-                      </template>
-                    </v-select>
+                    />
                   </v-col>
-                  
                   <v-col cols="12" md="4">
                     <v-select
                       v-model="selectedPriceRange"
@@ -197,15 +227,11 @@ export default {
                       :items="priceRanges"
                       item-title="text"
                       item-value="value"
-                      outlined
-                      dense
-                      clearable
+                      outlined dense clearable
                       prepend-inner-icon="mdi-currency-kes"
                       return-object
-                      aria-label="Filter by price range"
-                    ></v-select>
+                    />
                   </v-col>
-                  
                   <v-col cols="12" md="4">
                     <v-select
                       v-model="selectedRating"
@@ -213,12 +239,9 @@ export default {
                       :items="ratings"
                       item-title="text"
                       item-value="value"
-                      outlined
-                      dense
-                      clearable
+                      outlined dense clearable
                       prepend-inner-icon="mdi-star"
-                      aria-label="Filter by rating"
-                    ></v-select>
+                    />
                   </v-col>
                 </v-row>
               </div>
@@ -228,103 +251,25 @@ export default {
       </v-row>
     </v-container>
 
-    <!-- Results Section -->
+    <!-- GRID -->
     <v-container class="mt-6 mb-16">
-      <!-- Active Filters Chips -->
-      <div v-if="hasActiveFilters" class="mb-6">
-        <h4 class="text-subtitle-1 mb-2 sr-only">Active Filters:</h4>
-        <v-chip
-          v-if="searchQuery"
-          closable
-          @click:close="searchQuery = ''"
-          class="ma-1"
-          color="primary"
-          variant="outlined"
-          aria-label="Remove search filter"
-        >
-          Search: "{{ searchQuery }}"
-        </v-chip>
-        <v-chip
-          v-if="selectedRegion && selectedRegion !== 'All Regions'"
-          closable
-          @click:close="selectedRegion = null"
-          class="ma-1"
-          color="primary"
-          variant="outlined"
-          aria-label="Remove region filter"
-        >
-          Region: {{ selectedRegion }}
-        </v-chip>
-        <v-chip
-          v-if="selectedPriceRange"
-          closable
-          @click:close="selectedPriceRange = null"
-          class="ma-1"
-          color="primary"
-          variant="outlined"
-          aria-label="Remove price filter"
-        >
-          Price: {{ priceRanges.find(p => p.value === selectedPriceRange)?.text }}
-        </v-chip>
-        <v-chip
-          v-if="selectedRating !== null"
-          closable
-          @click:close="selectedRating = null"
-          class="ma-1"
-          color="primary"
-          variant="outlined"
-          aria-label="Remove rating filter"
-        >
-          Rating: {{ selectedRating }}+ Stars
-        </v-chip>
-      </div>
-
-      <!-- No Results Message -->
       <v-row v-if="filteredCompanies.length === 0" justify="center">
         <v-col cols="12" md="6" class="text-center py-10">
-          <v-icon size="80" color="grey" aria-hidden="true">mdi-magnify-close</v-icon>
+          <v-icon size="80" color="grey">mdi-magnify-close</v-icon>
           <h3 class="text-h5 mt-4 mb-2">No Companies Found</h3>
-          <p class="text-body-1 text-grey">
-            Try adjusting your filters or search terms
-          </p>
-          <v-btn
-            color="primary"
-            variant="outlined"
-            class="mt-4"
-            @click="clearFilters"
-            aria-label="Clear all filters and try again"
-          >
+          <p class="text-body-1 text-grey">Try adjusting your filters</p>
+          <v-btn color="primary" variant="outlined" class="mt-4" @click="clearFilters">
             Clear All Filters
           </v-btn>
         </v-col>
       </v-row>
 
-      <!-- Companies Grid -->
       <v-row v-else>
-        <v-col
-          v-for="company in filteredCompanies"
-          :key="company.id"
-          cols="12"
-          sm="6"
-          md="4"
-          lg="3"
-        >
+        <v-col v-for="company in filteredCompanies" :key="company.id" cols="12" sm="6" md="4" lg="3">
           <v-card class="tour-company-card h-100" elevation="3" rounded="lg">
-            <v-img 
-              :src="company.image" 
-              height="200px"
-              cover
-              class="tour-image"
-              alt="Company image"
-              loading="lazy"
-            >
+            <v-img :src="company.image" height="200px" cover class="tour-image">
               <div class="image-overlay">
-                <v-chip
-                  class="ma-2"
-                  color="success"
-                  size="small"
-                  aria-label="100% Kenyan owned"
-                >
+                <v-chip class="ma-2" color="success" size="small">
                   <v-icon start size="small">mdi-check-decagram</v-icon>
                   Kenyan Owned
                 </v-chip>
@@ -336,7 +281,7 @@ export default {
             </v-card-title>
             
             <v-card-subtitle class="grey--text pa-4 pb-2">
-              <v-icon size="small" color="grey">mdi-map-marker</v-icon>
+              <v-icon size="small">mdi-map-marker</v-icon>
               {{ company.location }}
             </v-card-subtitle>
             
@@ -355,37 +300,23 @@ export default {
                     color="amber"
                     readonly
                     size="small"
-                    aria-label="Company rating"
                   />
                   <span class="ml-1 text-caption">{{ company.rating }}</span>
                 </div>
               </div>
             </v-card-text>
             
-            <v-card-actions class="pa-4 pt-0">
-              <v-btn
-                color="primary"
-                variant="outlined"
-                block
-                @click="viewCompany(company.id)"
-                prepend-icon="mdi-information-outline"
-                aria-label="View details for {{ company.name }}"
-              >
-                View Details
-              </v-btn>
-            </v-card-actions>
+
             
             <v-card-actions class="pa-4 pt-0">
               <v-btn
                 color="success"
                 variant="elevated"
                 block
-                :href="`https://wa.me/254722123456?text=Hi ${company.name}, I'd like to book a safari`"
-                target="_blank"
-                prepend-icon="mdi-whatsapp"
-                aria-label="Contact {{ company.name }} via WhatsApp"
+                class="text-white font-weight-bold"
+                @click="openBookingDialog(company)"
               >
-                WhatsApp Now
+                Book Tour Now
               </v-btn>
             </v-card-actions>
           </v-card>
@@ -393,37 +324,122 @@ export default {
       </v-row>
     </v-container>
 
-    <!-- Simple Footer -->
+    <v-dialog v-model="bookingDialog" max-width="600">
+      <v-card class="pa-8">
+        <v-card-title class="text-h5 text-center mb-6">
+          Book Tour: {{ selectedCompany?.name }}
+        </v-card-title>
+
+        <v-form @submit.prevent="confirmBooking">
+          <v-text-field
+            v-model="bookingForm.date"
+            label="Tour Date"
+            type="date"
+            :min="today"
+            required
+            class="mb-4"
+          />
+
+          <v-row>
+            <v-col cols="6">
+              <v-text-field
+                v-model.number="bookingForm.adults"
+                label="Adults"
+                type="number"
+                min="1"
+                required
+              />
+            </v-col>
+            <v-col cols="6">
+              <v-text-field
+                v-model.number="bookingForm.children"
+                label="Children"
+                type="number"
+                min="0"
+              />
+            </v-col>
+          </v-row>
+
+          <v-textarea
+            v-model="bookingForm.requests"
+            label="Special Requests (Optional)"
+            rows="3"
+            class="my-4"
+          />
+
+          <v-btn
+            type="submit"
+            color="success"
+            size="x-large"
+            block
+            :loading="bookingLoading"
+            class="text-white"
+          >
+            Confirm Booking
+          </v-btn>
+        </v-form>
+      </v-card>
+    </v-dialog>
+
+    <v-dialog v-model="loginPrompt" max-width="450">
+      <v-card class="text-center pa-10">
+        <v-icon size="90" color="warning" class="mb-6">mdi-account-lock</v-icon>
+        <h2 class="text-h5 mb-4">Login Required</h2>
+        <p class="mb-8">You must be logged in to make a booking</p>
+        <v-btn color="primary" size="large" class="mx-2" @click="$router.push('/login')">
+          Log In
+        </v-btn>
+        <v-btn color="success" size="large" class="mx-2" @click="$router.push('/signup')">
+          Sign Up
+        </v-btn>
+      </v-card>
+    </v-dialog>
+
+    <!-- FOOTER -->
     <v-footer class="text-center pa-6 bg-primary" color="primary">
       <v-container>
-        <p class="white--text text-body-1">&copy; 2025 Safari Guide Kenya. All rights reserved. Proudly supporting local businesses.</p>
+        <p class="white--text text-body-1">&copy; 2025 Safari Guide Kenya. All rights reserved.</p>
       </v-container>
     </v-footer>
   </v-container>
 </template>
 
 <style scoped>
-.tour-companies-page { background: #f8f9fa; }
-.hero-section {
+.tour-companies-page { 
+  background: #f8f9fa; }
+.section {
   position: relative;
-  background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url('public/tourcompanies/hero.jpg') center/cover no-repeat fixed;
+  background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7));
   min-height: 60vh;
 }
 .overlay {
   position: absolute; inset: 0;
   background: linear-gradient(135deg, rgba(34,197,94,0.8), rgba(16,185,129,0.6));
 }
-.hero-content { z-index: 2; max-width: 800px; margin: 0 auto; padding: 0 20px; }
-.hero-search { max-width: 600px; margin: 0 auto; }
-.hero-search :deep(.v-field) {
+.content { 
+  z-index: 2; 
+  max-width: 800px; 
+  margin: 0 auto; 
+  padding: 0 20px; }
+.page-search { 
+  max-width: 600px; 
+  margin: 0 auto; }
+.search {
   background: white !important;
   border-radius: 50px !important;
-  font-size: 1rem;
 }
-.hero-search :deep(.v-field__input) { min-height: 60px; padding: 20px 24px; }
+.page-search :deep(.v-field__input) { min-height: 60px;
+   padding: 20px 24px; }
 
-.filter-section { margin-top: -40px; position: relative; z-index: 10; }
-.filter-card { background: white; border-radius: 16px; }
+.filter-section { 
+  margin-top: -40px; 
+  position: relative; 
+  z-index: 10; 
+}
+.filter-card { 
+  background: white; 
+  border-radius: 16px; 
+}
 
 .tour-company-card {
   border-radius: 16px;
@@ -436,33 +452,28 @@ export default {
   transform: translateY(-8px);
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15) !important;
 }
-.tour-image { transition: transform 0.4s ease; }
-.tour-company-card:hover .tour-image { transform: scale(1.05); }
+.tour-image { 
+  transition: transform 0.4s ease; 
+}
+.tour-company-card:hover .tour-image {
+   transform: scale(1.05); 
+  }
 .image-overlay {
   position: absolute; top: 0; left: 0; right: 0;
-  padding: 8px; background: linear-gradient(to bottom, rgba(0,0,0,0.3), transparent);
+  padding: 8px; 
+  background: linear-gradient(to bottom, rgba(0,0,0,0.3), transparent);
 }
-.price-tag, .rating-tag { display: flex; align-items: center; gap: 4px; }
+.price-tag, .rating-tag { 
+  display: flex; 
+  align-items: center; 
+  gap: 4px; }
 
 .line-clamp-2 {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
-/* Accessibility & Responsive */
-@media (max-width: 960px) {
-  .hero-section { min-height: 50vh; background-attachment: scroll; }
-  .hero-content h1 { font-size: 2.5rem !important; }
-  .hero-search { max-width: 90%; }
-  .filter-section { margin-top: -30px; }
-}
 
-/* Animations */
+
 .tour-company-card { animation: fadeInUp 0.5s ease forwards; }
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(30px); }
-  to { opacity: 1; transform: translateY(0); }
-}
+
 </style>

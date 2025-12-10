@@ -1,110 +1,158 @@
-<script>
+<script setup>
+import { ref, computed } from "vue";
+import { useRouter } from "vue-router";
+import axios from "axios";
 import { Hotels } from "../router/HotelDetails.js";
 
-export default {
-  name: "Hotels",
-  data() {
-    return {
-      hotels: Hotels,
-      searchQuery: "",
-      selectedRegion: null,
-      selectedPriceRange: null,
-      selectedRating: null,
-      regions: ["All Regions", "Nairobi", "Mombasa", "Maasai Mara", "Diani", "Amboseli", "Samburu", "Tsavo"],
-      priceRanges: [
-        { text: "All Prices", value: null },
-        { text: "Under $100", value: { min: 0, max: 100 } },
-        { text: "$100 - $250", value: { min: 100, max: 250 } },
-        { text: "$250 - $500", value: { min: 250, max: 500 } },
-        { text: "$500+", value: { min: 500, max: Infinity } }
-      ],
-      ratings: [
-        { text: "All Ratings", value: null },
-        { text: "4.5+ Stars", value: 4.5 },
-        { text: "4.0+ Stars", value: 4.0 },
-        { text: "3.5+ Stars", value: 3.5 },
-        { text: "3.0+ Stars", value: 3.0 }
-      ],
-      showFilters: true
-    };
-  },
-  computed: {
-    filteredHotels() {
-      let results = [...this.hotels];
+const router = useRouter();
 
-      if (this.searchQuery && this.searchQuery.trim()) {
-        const query = this.searchQuery.toLowerCase().trim();
-        results = results.filter(hotel => {
-          return (
-            hotel.name.toLowerCase().includes(query) ||
-            hotel.location.toLowerCase().includes(query) ||
-            (hotel.description && hotel.description.toLowerCase().includes(query))
-          );
-        });
-      }
+const hotels = ref(Hotels);
+const searchQuery = ref("");
+const selectedRegion = ref(null);
+const selectedPriceRange = ref(null);
+const selectedRating = ref(null);
+const showFilters = ref(true);
 
-      if (this.selectedRegion && this.selectedRegion !== "All Regions") {
-        results = results.filter(hotel => 
-          hotel.location.toLowerCase().includes(this.selectedRegion.toLowerCase())
-        );
-      }
+const regions = [
+  "All Regions", "Nairobi", "Mombasa", "Maasai Mara", "Amboseli", "Tsavo", 
+  "Samburu", "Lake Nakuru", "Diani Beach", "Lamu", "Mount Kenya"
+];
 
-      if (this.selectedPriceRange) {
-        results = results.filter(hotel => {
-          const price = this.extractPrice(hotel.price);
-          return price >= this.selectedPriceRange.min && price <= this.selectedPriceRange.max;
-        });
-      }
+const priceRanges = [
+  { text: "All Prices", value: null },
+  { text: "Under KSh 10,000", value: { min: 0, max: 10000 } },
+  { text: "KSh 10,000 – 25,000", value: { min: 10000, max: 25000 } },
+  { text: "KSh 25,000 – 50,000", value: { min: 25000, max: 50000 } },
+  { text: "KSh 50,000 – 100,000", value: { min: 50000, max: 100000 } },
+  { text: "KSh 100,000+", value: { min: 100000, max: Infinity } }
+];
 
-      if (this.selectedRating !== null) {
-        results = results.filter(hotel => {
-          const rating = parseFloat(hotel.rating);
-          return rating >= this.selectedRating;
-        });
-      }
+const ratings = [
+  { text: "All Ratings", value: null },
+  { text: "4.0+ Very Good", value: 4.0 },
+  { text: "4.5+ Wonderful", value: 4.5 },
+  { text: "4.8+ Exceptional", value: 4.8 }
+];
 
-      return results;
-    },
-    resultsCount() {
-      return this.filteredHotels.length;
-    },
-    hasActiveFilters() {
-      return (
-        (this.searchQuery && this.searchQuery.trim()) ||
-        (this.selectedRegion && this.selectedRegion !== "All Regions") ||
-        this.selectedPriceRange !== null ||
-        this.selectedRating !== null
-      );
-    }
-  },
-  methods: {
-    viewHotel(id) {
-      this.$router.push({ name: "HotelItems", params: { id } });
-    },
-    extractPrice(priceString) {
-      const match = priceString.match(/\d+/);
-      return match ? parseInt(match[0]) : 0;
-    },
-    applyFilters() {
-      console.log("Filters applied:", {
-        search: this.searchQuery,
-        region: this.selectedRegion,
-        priceRange: this.selectedPriceRange,
-        rating: this.selectedRating
-      });
-    },
-    clearFilters() {
-      this.searchQuery = "";
-      this.selectedRegion = null;
-      this.selectedPriceRange = null;
-      this.selectedRating = null;
-    },
-    toggleFilters() {
-      this.showFilters = !this.showFilters;
-    }
+// ================= BOOKING =================
+const bookingDialog = ref(false);
+const showLoginPrompt = ref(false);
+const selectedHotel = ref(null);
+const booking = ref({
+  booker_name: "",
+  phone: "",
+  adults: 2,
+  children: 0,
+  rooms: 1,
+  checkIn: "",
+  checkOut: "",
+  requests: ""
+});
+const today = new Date().toISOString().split("T")[0];
+
+// ================= API =================
+const api = axios.create({
+  baseURL: "http://localhost:8000/api/v1",
+  headers: {
+    Authorization: `Bearer ${localStorage.getItem("token")}`,
+    "Content-Type": "application/json"
   }
-  
+});
+
+const isLoggedIn = () => !!localStorage.getItem("token");
+
+const openBookingDialog = (hotel) => {
+  if (!isLoggedIn()) {
+    showLoginPrompt.value = true;
+    return;
+  }
+  selectedHotel.value = hotel;
+  bookingDialog.value = true;
 };
+
+const confirmBooking = async () => {
+  if (!selectedHotel.value) return;
+
+  try {
+    const guests = Number(booking.value.adults) + Number(booking.value.children);
+
+    if (!booking.value.booker_name || !booking.value.phone || !booking.value.rooms) {
+      alert("Please fill in your name, phone number, and number of rooms.");
+      return;
+    }
+
+    await api.post("/hotel-bookings", {
+      hotel_id: selectedHotel.value.id,
+      booker_name: booking.value.booker_name,
+      phone: booking.value.phone,
+      check_in_date: booking.value.checkIn,
+      check_out_date: booking.value.checkOut,
+      guests: guests,
+      rooms: booking.value.rooms,
+      special_requests: booking.value.requests
+    });
+
+    alert("Successfully booked " + selectedHotel.value.name + "!");
+    bookingDialog.value = false;
+    router.push("/userprofile");
+
+  } catch (error) {
+    console.error(error);
+    alert(error.response?.data?.message || "Something went wrong with the booking.");
+  }
+};
+
+const viewHotel = (id) => router.push({ name: "HotelItems", params: { id } });
+
+const clearFilters = () => {
+  searchQuery.value = "";
+  selectedRegion.value = null;
+  selectedPriceRange.value = null;
+  selectedRating.value = null;
+};
+
+const toggleFilters = () => showFilters.value = !showFilters.value;
+
+// ================= FILTERED HOTELS =================
+const filteredHotels = computed(() => {
+  let results = [...hotels.value];
+
+  // Search
+  if (searchQuery.value?.trim()) {
+    const q = searchQuery.value.toLowerCase();
+    results = results.filter(h =>
+      h.name.toLowerCase().includes(q) ||
+      h.location.toLowerCase().includes(q)
+    );
+  }
+
+  // Region
+  if (selectedRegion.value && selectedRegion.value !== "All Regions") {
+    results = results.filter(h => 
+      h.location.toLowerCase().includes(selectedRegion.value.toLowerCase())
+    );
+  }
+
+  // Price — WORKS WITH KSH FORMAT
+  if (selectedPriceRange.value) {
+    results = results.filter(h => {
+      const priceStr = h.price || "";
+      const priceNum = parseInt(priceStr.replace(/[^\d]/g, ""), 10) || 0;
+      
+      return priceNum >= selectedPriceRange.value.min && 
+             (selectedPriceRange.value.max === Infinity || priceNum <= selectedPriceRange.value.max);
+    });
+  }
+
+  // Rating
+  if (selectedRating.value !== null) {
+    results = results.filter(h => parseFloat(h.rating) >= selectedRating.value);
+  }
+
+  return results;
+});
+
+const resultsCount = computed(() => filteredHotels.value.length);
 </script>
 
 <template>
@@ -116,13 +164,12 @@ export default {
           Explore Eco-Friendly Hotels in Kenya
         </h1>
         <p class="white--text text-h6 mb-6">
-          Discover the best lodges, resorts, and camps that care for nature &#127807;
+          Discover the best lodges, resorts, and camps that care for nature
         </p>
         
-        <!-- Search Bar -->
         <v-text-field
           v-model="searchQuery"
-          placeholder="Search by name, location (e.g., Hemingways, Nairobi)..."
+          placeholder="Search by name, location..."
           hide-details
           solo
           flat
@@ -134,44 +181,21 @@ export default {
       </div>
     </div>
 
+    <!-- FILTERS -->
     <v-container class="filter-section mt-6">
       <v-row justify="center">
         <v-col cols="12" md="10">
           <v-card class="filter-card pa-4 elevation-4 rounded-lg">
             <div class="d-flex align-center justify-space-between mb-3">
-              <div>
-                <h3 class="text-h6 font-weight-bold">
-                  Filter Hotels
-                  <v-chip
-                    v-if="resultsCount !== hotels.length"
-                    class="ml-2"
-                    color="primary"
-                    size="small"
-                  >
-                    {{ resultsCount }} of {{ hotels.length }}
-                  </v-chip>
-                </h3>
-              </div>
-              <div>
-                <v-btn
-                  v-if="hasActiveFilters"
-                  color="error"
-                  variant="text"
-                  size="small"
-                  @click="clearFilters"
-                  prepend-icon="mdi-filter-remove"
-                >
-                  Clear Filters
-                </v-btn>
-                <v-btn
-                  icon
-                  size="small"
-                  @click="toggleFilters"
-                  class="ml-2"
-                >
-                  <v-icon>{{ showFilters ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
-                </v-btn>
-              </div>
+              <h3 class="text-h6 font-weight-bold">
+                Filter Hotels
+                <v-chip v-if="resultsCount !== hotels.length" class="ml-2" color="primary" size="small">
+                  {{ resultsCount }} of {{ hotels.length }}
+                </v-chip>
+              </h3>
+              <v-btn icon size="small" @click="toggleFilters">
+                <v-icon>{{ showFilters ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
+              </v-btn>
             </div>
 
             <v-expand-transition>
@@ -182,20 +206,10 @@ export default {
                       v-model="selectedRegion"
                       label="Region"
                       :items="regions"
-                      outlined
-                      dense
-                      clearable
+                      outlined dense clearable
                       prepend-inner-icon="mdi-map-marker"
-                    >
-                      <template v-slot:prepend-item>
-                        <v-list-item @click="selectedRegion = null">
-                          <v-list-item-title>All Regions</v-list-item-title>
-                        </v-list-item>
-                        <v-divider></v-divider>
-                      </template>
-                    </v-select>
+                    />
                   </v-col>
-                  
                   <v-col cols="12" md="4">
                     <v-select
                       v-model="selectedPriceRange"
@@ -203,14 +217,11 @@ export default {
                       :items="priceRanges"
                       item-title="text"
                       item-value="value"
-                      outlined
-                      dense
-                      clearable
-                      prepend-inner-icon="mdi-currency-usd"
+                      outlined dense clearable
+                      prepend-inner-icon="mdi-currency-shilling"
                       return-object
-                    ></v-select>
+                    />
                   </v-col>
-                  
                   <v-col cols="12" md="4">
                     <v-select
                       v-model="selectedRating"
@@ -218,23 +229,11 @@ export default {
                       :items="ratings"
                       item-title="text"
                       item-value="value"
-                      outlined
-                      dense
-                      clearable
+                      outlined dense clearable
                       prepend-inner-icon="mdi-star"
-                    ></v-select>
+                    />
                   </v-col>
                 </v-row>
-
-                <v-btn
-                  color="primary"
-                  class="mt-2"
-                  block
-                  @click="applyFilters"
-                  prepend-icon="mdi-filter-check"
-                >
-                  Apply Filters ({{ resultsCount }} Results)
-                </v-btn>
               </div>
             </v-expand-transition>
           </v-card>
@@ -242,141 +241,64 @@ export default {
       </v-row>
     </v-container>
 
-    <!-- Results Section -->
+    <!-- HOTELS GRID -->
     <v-container class="mt-6 mb-10">
-      <!-- Active Filters Chips -->
-      <div v-if="hasActiveFilters" class="mb-4">
-        <h4 class="text-subtitle-1 mb-2">Active Filters:</h4>
-        <v-chip
-          v-if="searchQuery"
-          closable
-          @click:close="searchQuery = ''"
-          class="ma-1"
-          color="primary"
-          variant="outlined"
-        >
-          Search: "{{ searchQuery }}"
-        </v-chip>
-        <v-chip
-          v-if="selectedRegion && selectedRegion !== 'All Regions'"
-          closable
-          @click:close="selectedRegion = null"
-          class="ma-1"
-          color="primary"
-          variant="outlined"
-        >
-          Region: {{ selectedRegion }}
-        </v-chip>
-        <v-chip
-          v-if="selectedPriceRange"
-          closable
-          @click:close="selectedPriceRange = null"
-          class="ma-1"
-          color="primary"
-          variant="outlined"
-        >
-          Price: {{ priceRanges.find(p => p.value === selectedPriceRange)?.text }}
-        </v-chip>
-        <v-chip
-          v-if="selectedRating !== null"
-          closable
-          @click:close="selectedRating = null"
-          class="ma-1"
-          color="primary"
-          variant="outlined"
-        >
-          Rating: {{ selectedRating }}+ Stars
-        </v-chip>
-      </div>
-
       <v-row v-if="filteredHotels.length === 0" justify="center">
-        <v-col cols="12" md="6" class="text-center py-10">
-          <v-icon size="80" color="grey">mdi-home-search-outline</v-icon>
-          <h3 class="text-h5 mt-4 mb-2">No Hotels Found</h3>
-          <p class="text-body-1 text-grey">
-            Try adjusting your filters or search terms
-          </p>
-          <v-btn
-            color="primary"
-            variant="outlined"
-            class="mt-4"
-            @click="clearFilters"
-          >
-            Clear All Filters
+        <v-col cols="12" class="text-center py-16">
+          <v-icon size="100" color="grey">mdi-home-search-outline</v-icon>
+          <h2 class="text-h4 mt-6">No Hotels Found</h2>
+          <v-btn color="primary" @click="clearFilters" class="mt-4">
+            Clear Filters
           </v-btn>
         </v-col>
       </v-row>
 
-      <!-- Hotels Grid -->
       <v-row v-else>
-        <v-col
-          v-for="hotel in filteredHotels"
-          :key="hotel.id"
-          cols="12"
-          sm="6"
-          md="4"
-        >
-          <v-card class="hotel-card h-100" elevation="3">
-            <v-img 
-              :src="hotel.image" 
-              height="220px"
-              cover
-              class="hotel-image"
-            >
+        <v-col v-for="hotel in filteredHotels" :key="hotel.id" cols="12" sm="6" md="4">
+          <v-card class="hotel-card h-100" elevation="8" rounded="xl">
+            <v-img :src="hotel.image" height="220" cover class="hotel-image">
               <div class="image-overlay">
-                <v-chip
-                  class="ma-2"
-                  color="success"
-                  size="small"
-                >
+                <v-chip class="ma-2" color="success" size="small">
                   <v-icon start size="small">mdi-leaf</v-icon>
                   Eco-Friendly
                 </v-chip>
               </div>
             </v-img>
-            
-            <v-card-title class="font-weight-bold">
+
+            <v-card-title class="font-weight-bold text-h6 pt-6">
               {{ hotel.name }}
             </v-card-title>
-            
-            <v-card-subtitle class="grey--text">
-              <v-icon size="small" color="grey">mdi-map-marker</v-icon>
+            <v-card-subtitle>
+              <v-icon size="small">mdi-map-marker</v-icon>
               {{ hotel.location }}
             </v-card-subtitle>
-            
+
             <v-card-text>
-              <div class="d-flex align-center justify-space-between">
-                <div class="price-tag">
-                  <v-icon size="small" color="primary">mdi-currency-usd</v-icon>
-                  <span class="font-weight-bold">{{ hotel.price }}</span>
-                </div>
-                <div class="rating-tag">
-                  <v-icon size="small" color="amber">mdi-star</v-icon>
-                  <span class="font-weight-bold">{{ hotel.rating }}</span>
+              <div class="d-flex justify-space-between align-center mb-4">
+                <span class="text-h6 font-weight-bold primary--text">
+                  {{ hotel.price }}/night
+                </span>
+                <div class="d-flex align-center">
+                  <v-rating
+                    :model-value="parseFloat(hotel.rating)"
+                    half-increments
+                    readonly
+                    size="small"
+                    color="amber"
+                  />
+                  <span class="ml-2">{{ hotel.rating }}</span>
                 </div>
               </div>
             </v-card-text>
-            
+
             <v-card-actions class="pa-4 pt-0">
-              <v-btn
-                color="primary"
-                variant="outlined"
-                block
-                @click="viewHotel(hotel.id)"
-                prepend-icon="mdi-information-outline"
-              >
+              <v-btn color="grey-darken-1" variant="outlined" block @click="viewHotel(hotel.id)">
                 View Details
               </v-btn>
             </v-card-actions>
-            
+
             <v-card-actions class="pa-4 pt-0">
-              <v-btn
-                color="primary"
-                variant="elevated"
-                block
-                to="/bookings"
-                prepend-icon="mdi-calendar-check"
-              >
+              <v-btn color="success" variant="elevated" block @click="openBookingDialog(hotel)">
                 Book Now
               </v-btn>
             </v-card-actions>
@@ -384,6 +306,120 @@ export default {
         </v-col>
       </v-row>
     </v-container>
+
+    <!-- BOOKING DIALOG -->
+    <v-dialog v-model="bookingDialog" max-width="650" persistent>
+      <v-card class="pa-8">
+        <v-card-title class="text-h5 text-center mb-6">
+          Book {{ selectedHotel?.name }}
+        </v-card-title>
+
+        <v-form @submit.prevent="confirmBooking">
+          <v-row>
+            <v-col cols="12" md="6">
+              <v-text-field
+                v-model="booking.booker_name"
+                label="Your Name"
+                required
+              />
+            </v-col>
+            <v-col cols="12" md="6">
+              <v-text-field
+                v-model="booking.phone"
+                label="Phone Number"
+                required
+              />
+            </v-col>
+          </v-row>
+
+          <v-row>
+            <v-col cols="6">
+              <v-text-field
+                v-model="booking.checkIn"
+                label="Check-in Date"
+                type="date"
+                :min="today"
+                required
+              />
+            </v-col>
+            <v-col cols="6">
+              <v-text-field
+                v-model="booking.checkOut"
+                label="Check-out Date"
+                type="date"
+                :min="booking.checkIn || today"
+                required
+              />
+            </v-col>
+          </v-row>
+
+          <v-row>
+            <v-col cols="4">
+              <v-text-field
+                v-model.number="booking.adults"
+                label="Adults"
+                type="number"
+                min="1"
+                required
+              />
+            </v-col>
+            <v-col cols="4">
+              <v-text-field
+                v-model.number="booking.children"
+                label="Children"
+                type="number"
+                min="0"
+              />
+            </v-col>
+            <v-col cols="4">
+              <v-text-field
+                v-model.number="booking.rooms"
+                label="Rooms"
+                type="number"
+                min="1"
+                required
+              />
+            </v-col>
+          </v-row>
+
+          <v-textarea
+            v-model="booking.requests"
+            label="Special Requests (Optional)"
+            rows="3"
+            class="mb-4"
+          />
+
+          <v-btn type="submit" color="success" size="x-large" block class="mb-4">
+            Confirm Booking
+          </v-btn>
+
+          <v-btn color="grey" variant="text" block @click="bookingDialog = false">
+            Cancel
+          </v-btn>
+        </v-form>
+      </v-card>
+    </v-dialog>
+
+    <v-dialog v-model="showLoginPrompt" max-width="450">
+      <v-card class="text-center pa-10">
+        <v-icon size="90" color="warning" class="mb-6">mdi-account-lock</v-icon>
+        <h2 class="text-h5 mb-4">Login Required</h2>
+        <p class="mb-8">You must be logged in to book a hotel</p>
+        <v-btn color="primary" size="large" class="mx-2" @click="$router.push('/login')">
+          Log In
+        </v-btn>
+        <v-btn color="success" size="large" class="mx-2" @click="$router.push('/signup')">
+          Sign Up
+        </v-btn>
+      </v-card>
+    </v-dialog>
+
+    <!-- FOOTER -->
+    <v-footer class="text-center pa-6 bg-primary" color="primary">
+      <v-container>
+        <p class="white--text text-body-1">&copy; 2025 Safari Guide Kenya. All rights reserved.</p>
+      </v-container>
+    </v-footer>
   </v-container>
 </template>
 
@@ -401,46 +437,37 @@ export default {
 
 .overlay {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  top: 0; left: 0; width: 100%; height: 100%;
   background: linear-gradient(135deg, rgba(20, 143, 236, 0.7), rgba(31, 117, 183, 0.8));
 }
 
-.content {
-  position: relative;
-  z-index: 2;
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 0 20px;
+.content { 
+  position: relative; 
+  z-index: 2; 
+  max-width: 800px; 
+  margin: 0 auto; 
+  padding: 0 20px; 
+
+}
+.search { 
+  max-width: 600px; 
+  margin: 0 auto; 
+}
+.search :deep(.v-field) { 
+  background-color: white; 
+  border-radius: 50px; 
+}
+.search :deep(.v-field__input) { 
+  padding: 20px 24px; min-height: 60px; 
 }
 
-.search {
-  max-width: 600px;
-  margin: 0 auto;
+.filter-section { 
+  margin-top: -40px; 
+  position: relative; 
+  z-index: 3; 
 }
-
-.search :deep(.v-field) {
-  background-color: white !important;
-  border-radius: 50px;
-  font-size: 1rem;
-}
-
-.search :deep(.v-field__input) {
-  padding: 20px 24px;
-  min-height: 60px;
-}
-
-.filter-section {
-  margin-top: -40px;
-  position: relative;
-  z-index: 3;
-}
-
-.filter-card {
-  border-radius: 16px;
-  background: white;
+.filter-card { 
+  border-radius: 16px; background: white; 
 }
 
 .hotel-card {
@@ -450,54 +477,17 @@ export default {
   display: flex;
   flex-direction: column;
 }
-
 .hotel-card:hover {
   transform: translateY(-8px);
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15) !important;
 }
-
-.hotel-image {
-  position: relative;
-  transition: transform 0.4s ease;
-}
-
-.hotel-card:hover .hotel-image {
-  transform: scale(1.05);
-}
+.hotel-image { position: relative; transition: transform 0.4s ease; }
+.hotel-card:hover .hotel-image { transform: scale(1.05); }
 
 .image-overlay {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
+  top: 0; left: 0; right: 0;
   padding: 8px;
   background: linear-gradient(to bottom, rgba(0,0,0,0.3), transparent);
 }
-
-.price-tag,
-.rating-tag {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.v-btn.primary {
-  background-color: rgb(20, 143, 236);
-  color: white;
-}
-
-  .hero-content h1 {
-    font-size: 1.75rem !important;
-  }
-  
-  .filter-section {
-    margin-top: -30px;
-  }
-
-
-.hotel-card {
-  animation: fadeInUp 0.5s ease forwards;
-}
-
-
 </style>

@@ -5,7 +5,7 @@ import { ref } from 'vue'
 <template>
   <div class="lakes-page">
 
-    <div class="hero">
+    <div class="page">
       <h2 class="title">LAKES & WETLANDS OF KENYA</h2>
       <p class="subtitle">Where the Sky Comes Down to Drink</p>
     </div>
@@ -16,14 +16,7 @@ import { ref } from 'vue'
       </h1>
 
       <v-row class="d-flex align-center my-16">
-        <v-col cols="12" md="6">
-          <v-carousel height="520" show-arrows cycle interval="4500" hide-delimiter-background class="rounded-xl elevation-20">
-            <v-carousel-item src="public/lakes/nakuru1.jpg" cover />
-            <v-carousel-item src="public/lakes/nakuru2.jpg" cover />
-            <v-carousel-item src="public/lakes/nakuru3.jpg" cover />
-          </v-carousel>
-        </v-col>
-        <v-col cols="12" md="6">
+        <v-col cols="12" md="12">
           <h3 class="card-subtitles text-pink-900">1. Lake Nakuru – The Pink Sea</h3>
           <p class="tribe-description">
             Once home to two million flamingos — a moving pink carpet visible from space. <br>
@@ -32,14 +25,18 @@ import { ref } from 'vue'
             This is not a lake. This is a living prayer.
           </p>
         </v-col>
+        <v-col cols="12" md="12">
+          <v-carousel height="520" show-arrows cycle interval="4500" hide-delimiter-background class="rounded-xl elevation-20">
+            <v-carousel-item src="public/coverImages/christopher-ford-lA-9wH3AlYY-unsplash.jpg" cover />
+            <v-carousel-item src="public/destinations/lakes/Screenshot 2025-12-10 075533.png" cover />
+            <v-carousel-item src="public/coverImages/bibhash-polygon-cafe-banerjee-3QPNiZ_Nqjs-unsplash.jpg" cover />
+          </v-carousel>
+        </v-col>
       </v-row>
       <v-divider thickness="4" color="#00838f" class="my-12" />
 
       <v-row class="d-flex align-center my-16">
-        <v-col cols="12" md="6" order-md="2">
-          <v-img src="public/lakes/bogoria.jpg" class="rounded-xl elevation-20" height="520" cover />
-        </v-col>
-        <v-col cols="12" md="6" order-md="1">
+        <v-col cols="12" md="12" order-md="1">
           <h3 class="card-subtitles text-red-900">2. Lake Bogoria – The Boiling Lake</h3>
           <p class="tribe-description">
             Over 200 hot springs and geysers erupt from pink soda water. <br>
@@ -48,18 +45,14 @@ import { ref } from 'vue'
             Even the flamingos know this place is sacred.
           </p>
         </v-col>
+        <v-col cols="12" md="12" order-md="2">
+          <v-img src="public/destinations/lakes/Screenshot 2025-12-10 075648.png" class="rounded-xl elevation-20" height="520" cover />
+        </v-col>
       </v-row>
       <v-divider thickness="4" color="#00838f" class="my-12" />
 
       <v-row class="d-flex align-center my-16">
-        <v-col cols="12" md="6">
-          <v-carousel height="520" show-arrows cycle interval="4500" class="rounded-xl elevation-20">
-            <v-carousel-item src="public/lakes/naivasha1.jpg" cover />
-            <v-carousel-item src="public/lakes/naivasha2.jpg" cover />
-            <v-carousel-item src="public/lakes/naivasha3.jpg" cover />
-          </v-carousel>
-        </v-col>
-        <v-col cols="12" md="6">
+        <v-col cols="12" md="12">
           <h3 class="card-subtitles text-teal-900">3. Lake Naivasha – The Breathing Heart</h3>
           <p class="tribe-description">
             Kenya’s only freshwater Rift Valley lake. <br>
@@ -68,14 +61,18 @@ import { ref } from 'vue'
             Joy Adamson wrote “Born Free” here. Some places still remember.
           </p>
         </v-col>
+        <v-col cols="12" md="12">
+          <v-carousel height="520" show-arrows cycle interval="4500" class="rounded-xl elevation-20">
+            <v-carousel-item src="public/destinations/lakes/Screenshot 2025-12-10 075925.png" cover />
+            <v-carousel-item src="public/coverImages/bibhash-polygon-cafe-banerjee-3QPNiZ_Nqjs-unsplash.jpg" cover />
+            <v-carousel-item src="public/destinations/lakes/Screenshot 2025-12-10 080039.png" cover />
+          </v-carousel>
+        </v-col>
       </v-row>
       <v-divider thickness="4" color="#00838f" class="my-12" />
 
       <v-row class="d-flex align-center my-16">
-        <v-col cols="12" md="6" order-md="2">
-          <v-img src="public/lakes/baringo-elementaita.jpg" class="rounded-xl elevation-20" height="520" cover />
-        </v-col>
-        <v-col cols="12" md="6" order-md="1">
+        <v-col cols="12" md="12" order-md="1">
           <h3 class="card-subtitles text-cyan-900">4. Baringo & Elementaita – Twin Jewels</h3>
           <p class="tribe-description">
             Baringo — 500 bird species, crocodile islands, Njemps fishermen who sing to hippos. <br>
@@ -84,14 +81,14 @@ import { ref } from 'vue'
             Here, water remembers everything.
           </p>
         </v-col>
+        <v-col cols="12" md="12" order-md="2">
+          <v-img src="public/destinations/lakes/Screenshot 2025-12-10 075347.png" class="rounded-xl elevation-20" height="520" cover />
+        </v-col>
       </v-row>
       <v-divider thickness="4" color="#00838f" class="my-12" />
 
       <v-row class="d-flex align-center my-16">
-        <v-col cols="12" md="6">
-          <v-img src="public/lakes/magadi.jpg" class="rounded-xl elevation-20" height="520" cover />
-        </v-col>
-        <v-col cols="12" md="6">
+        <v-col cols="12" md="12">
           <h3 class="card-subtitles text-purple-900">5. Lake Magadi – The Final Frontier</h3>
           <p class="tribe-description">
             Kenya’s hottest, saltiest, most extreme lake. <br>
@@ -99,6 +96,9 @@ import { ref } from 'vue'
             Flamingos breed here when every other lake fails. <br>
             The Maasai say this is where the first fire cooled.
           </p>
+        </v-col>
+        <v-col cols="12" md="12">
+          <v-img src="public/destinations/lakes/Screenshot 2025-12-10 075036.png" class="rounded-xl elevation-20" height="520" cover />
         </v-col>
       </v-row>
 
@@ -150,9 +150,9 @@ import { ref } from 'vue'
   min-height: 100vh;
 }
 
-.hero {
+.page {
   position: relative;
-  background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.8)), url('public/lakes/hero.jpg') center/cover no-repeat fixed;
+  background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.8)), url('public/lakes/page.jpg') center/cover no-repeat fixed;
   height: 55vh;
   display: flex;
   flex-direction: column;

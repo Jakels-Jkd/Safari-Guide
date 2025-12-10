@@ -1,6 +1,6 @@
 export const TourCompanies = [
   {
-    id: 1,
+    id: 2,
     name: "Jocky Tours and Safaris",
     location: "Nairobi, Kenya",
     price: "$50–$200/day",
@@ -9,7 +9,7 @@ export const TourCompanies = [
     description: "Budget & mid-range private safaris with daily departures across Kenya."
   },
   {
-    id: 2,
+    id: 3,
     name: "Axis Africa Expedition & Safaris",
     location: "Nairobi, Kenya",
     price: "$150–$1,200/day",
@@ -18,7 +18,7 @@ export const TourCompanies = [
     description: "Mid-range to luxury safaris with fixed itineraries and excellent guides."
   },
   {
-    id: 3,
+    id: 4,
     name: "Aanika Karibu Safaris In Kenya",
     location: "Nairobi, Kenya",
     price: "$80–$280/day",
@@ -27,7 +27,7 @@ export const TourCompanies = [
     description: "Small-group and private tours covering Kenya and Tanzania."
   },
   {
-    id: 4,
+    id: 5,
     name: "Lenchada Safaris",
     location: "Nairobi, Kenya",
     price: "$150–$750/day",
@@ -36,7 +36,7 @@ export const TourCompanies = [
     description: "Custom daily-departure budget to mid-range Kenya safaris."
   },
   {
-    id: 5,
+    id: 6,
     name: "Sino Africa Safari",
     location: "Nairobi, Kenya",
     price: "$150–$300/day",
@@ -45,7 +45,7 @@ export const TourCompanies = [
     description: "Popular mid-range operator with multilingual guides, strong in Kenya & Tanzania."
   },
   {
-    id: 6,
+    id: 7,
     name: "Super Eagles Travel and Tours",
     location: "Nairobi, Kenya",
     price: "$160–$700/day",
@@ -54,7 +54,7 @@ export const TourCompanies = [
     description: "Custom tours across Kenya, Tanzania, and Uganda."
   },
   {
-    id: 7,
+    id: 8,
     name: "Spirit of Kenya",
     location: "Nairobi, Kenya",
     price: "$150–$300/day",
@@ -63,7 +63,7 @@ export const TourCompanies = [
     description: "Private mid-range & luxury tours with flexible start dates."
   },
   {
-    id: 8,
+    id: 9,
     name: "Bison Safaris",
     location: "Nairobi, Kenya",
     price: "$90–$350/day",
@@ -72,7 +72,7 @@ export const TourCompanies = [
     description: "Reliable budget group-joining safaris with set departures."
   },
   {
-    id: 9,
+    id: 10,
     name: "Amazing Memories Safaris",
     location: "Nairobi, Kenya",
     price: "$300–$700/day",
@@ -81,7 +81,7 @@ export const TourCompanies = [
     description: "Tailor-made mid-range & luxury experiences in Kenya and Tanzania."
   },
   {
-    id: 10,
+    id: 11,
     name: "Hyrax Safaris",
     location: "Nairobi, Kenya",
     price: "$400–$500/day",
@@ -90,7 +90,7 @@ export const TourCompanies = [
     description: "Boutique mid-range to luxury private safaris with daily departures."
   },
   {
-    id: 11,
+    id: 12,
     name: "Beacon Safaris",
     location: "Nairobi, Kenya",
     price: "$50–$120/day",
@@ -99,7 +99,7 @@ export const TourCompanies = [
     description: "One of the best budget operators with excellent reviews."
   },
   {
-    id: 12,
+    id: 13,
     name: "Meektrails Safaris",
     location: "Nairobi, Kenya",
     price: "$130–$2,000/day",
@@ -108,7 +108,7 @@ export const TourCompanies = [
     description: "Highly rated for personalized mid-range to luxury East Africa tours."
   },
   {
-    id: 13,
+    id: 14,
     name: "Shanjoy Tours and Safaris",
     location: "Nairobi, Kenya",
     price: "$50–$250/day",
@@ -117,7 +117,7 @@ export const TourCompanies = [
     description: "Affordable private and group tours across Kenya and Tanzania."
   },
   {
-    id: 14,
+    id: 15,
     name: "Inspired Feet Safaris",
     location: "Nairobi, Kenya",
     price: "$170–$300/day",
@@ -126,7 +126,7 @@ export const TourCompanies = [
     description: "Custom private and small-group adventures."
   },
   {
-    id: 15,
+    id: 16,
     name: "Unscripted Safaris",
     location: "Nairobi, Kenya",
     price: "$150–$300/day",
@@ -135,7 +135,7 @@ export const TourCompanies = [
     description: "Flexible mid-range & luxury tours across East Africa."
   },
   {
-    id: 16,
+    id: 17,
     name: "Antonio Safaris",
     location: "Nairobi, Kenya",
     price: "$250–$2,500/day",
@@ -144,7 +144,7 @@ export const TourCompanies = [
     description: "Premium tailor-made safaris with top-tier service."
   },
   {
-    id: 17,
+    id: 18,
     name: "Ramja Safaris",
     location: "Nairobi, Kenya",
     price: "$350–$1,000/day",
@@ -153,7 +153,7 @@ export const TourCompanies = [
     description: "Luxury private safaris with excellent wildlife focus."
   },
   {
-    id: 18,
+    id: 19,
     name: "Shadows of Africa",
     location: "Nairobi, Kenya",
     price: "$250–$1,500/day",
@@ -162,7 +162,7 @@ export const TourCompanies = [
     description: "Well-known regional operator with strong Kenya presence."
   },
   {
-    id: 19,
+    id: 20,
     name: "Ways Of Africa Travel",
     location: "Nairobi, Kenya",
     price: "$100–$1,000/day",
@@ -171,7 +171,7 @@ export const TourCompanies = [
     description: "Custom mid-range to luxury Kenya-focused tours."
   },
   {
-    id: 20,
+    id: 21,
     name: "Earthwings Tours and Safari",
     location: "Nairobi, Kenya",
     price: "$50–$275/day",

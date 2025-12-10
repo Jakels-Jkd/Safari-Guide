@@ -1,76 +1,62 @@
 <template>
-  <v-container fluid class="fill-height pa-0">
-    <v-row justify="center" align="center" class="fill-height">
+  <v-container>
+    <v-row justify="center">
       <v-col cols="12" sm="8" md="6" lg="4">
-        <v-card class="katheu elevation-12 pa-6" rounded="xl">
-          <v-card-title class="text-center text-h5 font-weight-bold mb-4">
-            Log In
+        <v-card class="katheu" style="margin-top: 10vh;" elevation="16">
+          <v-card-title class="text-center text-h4 font-weight-bold text-primary py-6">
+            Welcome Back
           </v-card-title>
 
-          <v-form @submit.prevent="login" class="px-4">
-            <v-text-field
-              v-model="email"
-              label="Email"
-              variant="outlined"
-              color="primary"
-              prepend-inner-icon="mdi-email"
-              type="email"
-              required
-              :disabled="loading"
-              class="mb-4"
-            />
+          <v-card-text class="px-8">
+            <v-form @submit.prevent="login">
+              <v-text-field
+                v-model="email"
+                label="Email Address"
+                type="email"
+                variant="outlined"
+                prepend-inner-icon="mdi-email"
+                required
+                class="mb-4"
+              />
 
-            <v-text-field
-              v-model="password"
-              label="Password"
-              variant="outlined"
-              color="primary"
-              prepend-inner-icon="mdi-lock"
-              type="password"
-              required
-              :disabled="loading"
-              class="mb-6"
-            />
+              <!-- PASSWORD WITH SHOW/HIDE TOGGLE -->
+              <v-text-field
+                v-model="password"
+                :type="showPassword ? 'text' : 'password'"
+                label="Password"
+                variant="outlined"
+                prepend-inner-icon="mdi-lock"
+                :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
+                @click:append-inner="showPassword = !showPassword"
+                required
+                class="mb-6"
+              />
 
-            <!-- Error Message -->
-            <v-alert
-              v-if="errorMessage"
-              type="error"
-              dense
-              class="mb-4"
-              transition="fade-transition"
-            >
-              {{ errorMessage }}
-            </v-alert>
+              <v-alert v-if="errorMessage" type="error" dense outlined class="mb-6">
+                {{ errorMessage }}
+              </v-alert>
 
-            <v-btn
-              type="submit"
-              :loading="loading"
-              :disabled="loading || !email || !password"
-              color="blue"
-              size="large"
-              block
-              class="text-white"
-            >
-              {{ loading ? "Signing in..." : "Log In" }}
-            </v-btn>
-          </v-form>
+              <v-btn
+                type="submit"
+                color="primary"
+                size="x-large"
+                block
+                :loading="loading"
+                class="mb-4 text-white font-weight-bold"
+              >
+                Log In
+              </v-btn>
+            </v-form>
+          </v-card-text>
 
-          <v-card-actions class="justify-center mt-6">
+          <v-card-actions class="justify-center pb-8">
             <span class="text-body-2">
-              Don’t have an account?
-              <router-link to="/signup" class="text-blue font-weight-medium text-decoration-none">
-                Sign Up
+              New to Safari Guide?
+              <router-link to="/signup" class="text-primary font-weight-bold">
+                Create Account
               </router-link>
             </span>
           </v-card-actions>
-
-          <!-- Optional: Admin quick link (remove if not needed) -->
-          <!-- <div class="text-center mt-3">
-            <router-link to="/admin" class="text-caption text-grey-darken-1">
-              Admin Login →
-            </router-link>
-          </div> -->
         </v-card>
       </v-col>
     </v-row>
@@ -80,54 +66,49 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import { loginUser } from "@/services/userServices";
+import axios from "axios";
 
+const API_URL = "http://127.0.0.1:8000/api/v1";
 
 const email = ref("");
 const password = ref("");
-const loading = ref(false);
 const errorMessage = ref("");
-
+const loading = ref(false);
 const router = useRouter();
+
+// ONLY THIS LINE ADDED
+const showPassword = ref(false);
 
 const login = async () => {
   errorMessage.value = "";
   loading.value = true;
 
   try {
-    const response = await loginUser({
-      email: email.value.trim(),
+    const response = await axios.post(`${API_URL}/login`, {
+      email: email.value.trim().toLowerCase(),
       password: password.value,
     });
 
-    const { token, user } = response.data;
+    const { user, token } = response.data;
 
-    // Save to localStorage
     localStorage.setItem("token", token);
     localStorage.setItem("user", JSON.stringify(user));
 
-    console.log("Login successful:", user.name || user.email);
+    const role = user.role.trim().toLowerCase();
 
-    // Redirect based on role
-    if (user.role === "admin" || user.isAdmin || user.email === "admin@example.com") {
-      router.push("/admin");
+    if (role === "admin") {
+      await router.push("/admin");
+    } else if (role === "hoteladmin") {
+      await router.push("/hotel-admin");
+    } else if (role === "tourcompanyadmin") {
+      await router.push("/tour-admin");
     } else {
-      router.push("/"); // Home or user dashboard
+      await router.push("/");
     }
+
   } catch (err) {
-    console.error("Login failed:", err);
-
-    const msg = err.response?.data?.message || "Login failed. Please try again.";
-
-    if (err.response?.status === 401) {
-      errorMessage.value = "Invalid email or password.";
-    } else if (err.response?.status === 403) {
-      errorMessage.value = "Account suspended. Contact support.";
-    } else if (!navigator.onLine) {
-      errorMessage.value = "No internet connection.";
-    } else {
-      errorMessage.value = msg;
-    }
+    console.error(err);
+    errorMessage.value = err.response?.data?.message || "Invalid credentials";
   } finally {
     loading.value = false;
   }
@@ -136,12 +117,11 @@ const login = async () => {
 
 <style scoped>
 .katheu {
-  max-width: 480px;
+  max-width: 500px;
   margin: 0 auto;
+  border-radius: 20px;
+  background: white;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
 }
-
-.fill-height {
-  height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-}
+.text-primary { color: #1976d2 !important; }
 </style>

@@ -13,16 +13,15 @@ import Cultures from "@/views/Cultures.vue";
 import HistoricalSites from "@/views/HistoricalSites.vue";
 import WildlifeSafaris from "@/views/WildlifeSafaris.vue";
 import NatureScenicTourism from "@/views/NatureScenicTourism.vue";
-import FAQs from "@/components/FAQs.vue";
 import TravelBlog from "@/components/TravelBlog.vue";
 import lakesWestlands from "@/views/LakesWestlands.vue";
 import ContactUs from "@/components/ContactUs.vue";
 import Bookings from "@/components/booking.vue";
 import MarineBeachTourism from "@/views/MarineBeachTourism.vue";
-import Admin from "@/views/Admin.vue";
 import DesertTourism from "@/views/DesertTourism.vue";
 import WaterSports from "@/views/waterSports.vue";
 import ForestTourism from "@/views/ForestTourism.vue";
+import Ecotourism from "@/views/ecotourism.vue";
 
 const routes = [
   {
@@ -98,11 +97,6 @@ const routes = [
     component: NatureScenicTourism
   },
   {
-    name     : "FAQs",
-    path     : "/faqs",
-    component: FAQs
-  },
-  {
     name     : "TravelBlog",
     path     : "/travelblog",
     component: TravelBlog
@@ -123,11 +117,6 @@ const routes = [
     component: Bookings
   },
   {
-    name     : "Admin",
-    path     : "/admin",
-    component: Admin
-  },
-  {
     name     : "DesertTourism",
     path     : "/deserttourism",
     component: DesertTourism
@@ -141,6 +130,11 @@ const routes = [
     name:'forestTourism',
     path:'/forestsandnaturereserves',
     component:ForestTourism
+  },
+  {
+    name:'ecoutourism',
+    path:'/ecotourism',
+    component:Ecotourism
   }
 
 ];

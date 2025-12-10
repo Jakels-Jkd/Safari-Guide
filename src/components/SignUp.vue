@@ -1,32 +1,50 @@
 <script setup>
 import { ref } from "vue";
-import { registerUser } from "@/services/userServices"; 
+import { useRouter } from "vue-router";
+import axios from "axios";
+
+const router = useRouter();
 
 const username = ref("");
 const email = ref("");
 const password = ref("");
 const password_confirmation = ref("");
 const loading = ref(false);
+const error = ref("");
+
+// ← ONLY THIS PART IS NEW
+const showPassword = ref(false);
+const showConfirmPassword = ref(false);
 
 const register = async () => {
-  loading.value = true(
-    
-  );
+  if (!username.value || !email.value || !password.value) {
+    error.value = "All fields are required";
+    return;
+  }
+  if (password.value !== password_confirmation.value) {
+    error.value = "Passwords do not match";
+    return;
+  }
 
+  loading.value = true;
+  error.value = "";
 
   try {
-    const response = await registerUser({
-      name: username.value, 
+    const response = await axios.post("http://127.0.0.1:8000/api/v1/register", {
+      name: username.value,
       email: email.value,
       password: password.value,
       password_confirmation: password_confirmation.value,
-      role_id: 2, 
+      role_id: 2
     });
 
-    console.log("REGISTER SUCCESS:", response.data);
-    // Optionally redirect or show success toast here
+    localStorage.setItem("token", response.data.token);
+    localStorage.setItem("user", JSON.stringify(response.data.user));
+
+    alert("Account created successfully!");
+    router.push("/");
   } catch (err) {
-    console.log("REGISTER ERROR:", err.response?.data || err.message);
+    error.value = err.response?.data?.message || "Registration failed. Try again.";
   } finally {
     loading.value = false;
   }
@@ -34,78 +52,84 @@ const register = async () => {
 </script>
 
 <template>
-  <v-container>
-    <v-row>
-      <v-col>
-        <v-card class="katheu" style="margin-top: 10vh;">
-          <v-card-title
-            style="text-align: center; font-size: 1.5em; font-weight: bold;"
-          >
-            Sign Up
+  <v-container class="fill-height">
+    <v-row justify="center" align="center">
+      <v-col cols="12" sm="8" md="6" lg="4">
+        <v-card class="pa-8 katheu" elevation="16" rounded="xl">
+          <v-card-title class="text-center text-h4 font-weight-bold mb-6">
+            Create Account
           </v-card-title>
 
           <v-card-text>
             <v-form @submit.prevent="register">
               <v-text-field
                 v-model="username"
-                label="Username"
+                label="Full Name"
                 variant="outlined"
-                style="margin-bottom: 2vh;"
+                prepend-inner-icon="mdi-account"
+                class="mb-4"
+                required
               />
 
               <v-text-field
                 v-model="email"
-                label="Email"
+                label="Email Address"
+                type="email"
                 variant="outlined"
-                style="margin-bottom: 2vh;"
+                prepend-inner-icon="mdi-email"
+                class="mb-4"
+                required
               />
 
+              <!-- PASSWORD WITH TOGGLE -->
               <v-text-field
                 v-model="password"
+                :type="showPassword ? 'text' : 'password'"
                 label="Password"
-                type="password"
                 variant="outlined"
-                style="margin-bottom: 2vh;"
+                prepend-inner-icon="mdi-lock"
+                :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
+                @click:append-inner="showPassword = !showPassword"
+                class="mb-4"
+                required
               />
 
+              <!-- CONFIRM PASSWORD WITH TOGGLE -->
               <v-text-field
                 v-model="password_confirmation"
+                :type="showConfirmPassword ? 'text' : 'password'"
                 label="Confirm Password"
-                type="password"
                 variant="outlined"
-                style="margin-bottom: 2vh;"
+                prepend-inner-icon="mdi-lock-check"
+                :append-inner-icon="showConfirmPassword ? 'mdi-eye-off' : 'mdi-eye'"
+                @click:append-inner="showConfirmPassword = !showConfirmPassword"
+                class="mb-6"
+                required
               />
+
+              <v-alert v-if="error" type="error" class="mb-4">
+                {{ error }}
+              </v-alert>
 
               <v-btn
                 type="submit"
-                :loading="loading"
-                variant="tonal"
-                color="blue"
+                color="primary"
+                size="x-large"
                 block
-                
+                :loading="loading"
+                class="mb-4"
               >
-                Confirm    
+                Sign Up
               </v-btn>
-              <v-router-link to="/home">
-                <v-btn
-                  type="submit"
-                  :loading="loading"
-                  variant="tonal"
-                  color="blue"
-                  block
-                >
-                  Confirm
-                </v-btn>
-                </v-router-link>
             </v-form>
-          </v-card-text>
 
-          <v-card-actions style="flex-direction: column; align-items: center;">
-            <v-text>
-              Already have an account?
-              <a href="/login">Log In</a>
-            </v-text>
-          </v-card-actions>
+            <div class="text-center">
+              <span class="text-body-2">Already have an account? </span>
+              <router-link to="/login" class="text-primary font-weight-bold text-decoration-none">
+                Log In
+              </router-link>
+            </div>
+          </v-card-text>
         </v-card>
       </v-col>
     </v-row>
@@ -114,9 +138,8 @@ const register = async () => {
 
 <style scoped>
 .katheu {
-  width: 50%;
-  margin: 0 auto;
-  backdrop-filter: blur(8px);
-  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(0, 0, 0, 0.1);
 }
 </style>
