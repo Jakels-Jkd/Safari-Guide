@@ -12,7 +12,6 @@ const password_confirmation = ref("");
 const loading = ref(false);
 const error = ref("");
 
-// ← ONLY THIS PART IS NEW
 const showPassword = ref(false);
 const showConfirmPassword = ref(false);
 
@@ -81,7 +80,6 @@ const register = async () => {
                 required
               />
 
-              <!-- PASSWORD WITH TOGGLE -->
               <v-text-field
                 v-model="password"
                 :type="showPassword ? 'text' : 'password'"
@@ -94,7 +92,6 @@ const register = async () => {
                 required
               />
 
-              <!-- CONFIRM PASSWORD WITH TOGGLE -->
               <v-text-field
                 v-model="password_confirmation"
                 :type="showConfirmPassword ? 'text' : 'password'"

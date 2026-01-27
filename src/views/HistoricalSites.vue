@@ -5,7 +5,6 @@ import { ref } from 'vue'
 <template>
   <div class="history-page">
 
-    <!-- HERO – same emotional style you fell in love with -->
     <div class="nema">
       <div class="overlay"></div>
       <div class="content">
@@ -177,7 +176,7 @@ import { ref } from 'vue'
       </div>
     </v-container>
 
-    <!-- FOOTER – same as Cultures page -->
+    <!-- FOOTER  -->
     <footer class="culture-footer">
       <p class="text-h6">© 2025 Safari Guide Kenya — Preserving Yesterday for Tomorrow</p>
       <div class="contact">
@@ -189,7 +188,6 @@ import { ref } from 'vue'
   </div>
 </template>
 
-<!-- EXACT SAME BEAUTIFUL STYLE FROM THE CULTURES PAGE -->
 <style scoped>
 .history-page {
   background: linear-gradient(to bottom, #fffaf0, #fdfd96 5%, #f5f5dc 95%);
@@ -200,8 +198,7 @@ import { ref } from 'vue'
 .nema {
   position: relative;
   height: 80vh;
-  background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)),
-              url('public/history/hero.jpg') center/cover no-repeat;
+  background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -214,7 +211,9 @@ import { ref } from 'vue'
 .title { font-size: 6.rem; font-weight: 900; letter-spacing: 4px; text-shadow: 4px 4px 20px rgba(0,0,0,0.8); }
 .subtitle { font-size: 2.2rem; font-weight: 300; letter-spacing: 8px; margin-top: 1rem; opacity: 0.95; }
 
-.underline-elegant { position: relative; display: inline-block; padding-bottom: 12px; }
+.underline-elegant { 
+  position: relative; 
+  display: inline-block; padding-bottom: 12px; }
 .underline-elegant::after {
   content: ''; position: absolute; left: 50%; bottom: 0;
   width: 180px; height: 5px; background: linear-gradient(90deg, transparent, #c19a6b, transparent);
@@ -240,13 +239,8 @@ import { ref } from 'vue'
 }
 
 .fade-in { opacity: 0; animation: fadeInUp 0.9s ease-out forwards; transform: translateY(40px); }
-.culture-entry:nth-child(2) { animation-delay: 0.2s; }
-.culture-entry:nth-child(4) { animation-delay: 0.4s; }
-/* add more delays if you want */
-
 @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
 
-.final-section { background: linear-gradient(rgba(255,255,255,0.7), rgba(255,248,220,0.9)); border-radius: 30px; padding: 5rem 2rem; margin: 6rem 0; }
 .final-title { font-size: 4.2rem; color: #654321; }
 .final-quote { font-size: 2.1rem; font-style: italic; color: #8B4513; line-height: 2.2; }
 

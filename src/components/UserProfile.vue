@@ -17,7 +17,6 @@
       <v-row justify="center">
         <v-col cols="12" md="10" lg="8">
 
-          <!-- PROFILE CARD -->
           <v-card class="mb-12 pa-8" elevation="12" rounded="xl">
             <v-card-title class="text-h4 font-weight-bold text-primary mb-6">
               <v-icon left color="primary">mdi-account-circle</v-icon>
@@ -176,14 +175,12 @@ const allBookings = ref([])
 const editProfile = ref(false)
 const editName = ref('')
 
-// Auto-generated avatar
 const userAvatar = computed(() => {
   return user.value.name
     ? `https://ui-avatars.com/api/?name=${encodeURIComponent(user.value.name)}&background=1976d2&color=fff&size=256&bold=true`
     : 'https://ui-avatars.com/api/?name=User&background=666&color=fff&size=256'
 })
 
-// Load user + bookings
 onMounted(() => {
   const savedUser = localStorage.getItem('user')
   const savedBookings = localStorage.getItem('lastBookings')
@@ -199,7 +196,6 @@ onMounted(() => {
   }
 })
 
-// Watch for changes in localStorage (from other pages)
 watch(
   () => localStorage.getItem('lastBookings'),
   () => {
@@ -215,7 +211,6 @@ const sortBookings = () => {
   allBookings.value.sort((a, b) => new Date(b.bookedAt) - new Date(a.bookedAt))
 }
 
-// Cancel booking from profile
 const cancelBooking = (index) => {
   const booking = allBookings.value[index]
   const type = booking.type === 'tour' ? 'tour' : 'hotel stay'

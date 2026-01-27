@@ -1,4 +1,3 @@
-<!-- src/views/TourCompanyDetails.vue -->
 <script setup>
 import { useRoute } from "vue-router";
 import { TourCompanies } from "../router/TourCompanies.js";

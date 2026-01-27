@@ -1,4 +1,3 @@
-<!-- src/views/DesertTourism.vue — THE ULTIMATE DESERT MASTERPIECE -->
 <script setup>
 import { ref } from 'vue'
 </script>
@@ -6,7 +5,6 @@ import { ref } from 'vue'
 <template>
   <div class="desert-page">
 
-    <!-- HERO – Like your Cultures page, but on fire -->
     <div class="nema">
       <h2 class="title">NORTHERN KENYA</h2>
       <p class="subtitle">The Last True Wilderness</p>
@@ -137,7 +135,7 @@ import { ref } from 'vue'
 
 .nema {
   position: relative;
-  background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.7)), url('public/desert/hero.jpg') center/cover no-repeat;
+  background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.7));
   height: 50vh;
   display: flex;
   flex-direction: column;

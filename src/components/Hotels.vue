@@ -34,7 +34,6 @@ const ratings = [
   { text: "4.8+ Exceptional", value: 4.8 }
 ];
 
-// ================= BOOKING =================
 const bookingDialog = ref(false);
 const showLoginPrompt = ref(false);
 const selectedHotel = ref(null);
@@ -50,7 +49,6 @@ const booking = ref({
 });
 const today = new Date().toISOString().split("T")[0];
 
-// ================= API =================
 const api = axios.create({
   baseURL: "http://localhost:8000/api/v1",
   headers: {
@@ -92,8 +90,31 @@ const confirmBooking = async () => {
       special_requests: booking.value.requests
     });
 
+    const currentBookings = JSON.parse(localStorage.getItem('lastBookings') || '[]');
+    
+    const newBooking = {
+      id: Date.now(),
+      type: 'hotel',
+      name: selectedHotel.value.name,
+      location: selectedHotel.value.location,
+      image: selectedHotel.value.image,
+      checkIn: booking.value.checkIn,
+      checkOut: booking.value.checkOut,
+      adults: booking.value.adults,
+      children: booking.value.children,
+      guests: guests,
+      rooms: booking.value.rooms,
+      requests: booking.value.requests,
+      price: selectedHotel.value.price,
+      bookedAt: new Date().toISOString()
+    };
+
+    currentBookings.unshift(newBooking);
+    localStorage.setItem('lastBookings', JSON.stringify(currentBookings));
+
     alert("Successfully booked " + selectedHotel.value.name + "!");
     bookingDialog.value = false;
+
     router.push("/userprofile");
 
   } catch (error) {
@@ -113,11 +134,9 @@ const clearFilters = () => {
 
 const toggleFilters = () => showFilters.value = !showFilters.value;
 
-// ================= FILTERED HOTELS =================
 const filteredHotels = computed(() => {
   let results = [...hotels.value];
 
-  // Search
   if (searchQuery.value?.trim()) {
     const q = searchQuery.value.toLowerCase();
     results = results.filter(h =>
@@ -126,14 +145,12 @@ const filteredHotels = computed(() => {
     );
   }
 
-  // Region
   if (selectedRegion.value && selectedRegion.value !== "All Regions") {
     results = results.filter(h => 
       h.location.toLowerCase().includes(selectedRegion.value.toLowerCase())
     );
   }
 
-  // Price — WORKS WITH KSH FORMAT
   if (selectedPriceRange.value) {
     results = results.filter(h => {
       const priceStr = h.price || "";
@@ -144,7 +161,6 @@ const filteredHotels = computed(() => {
     });
   }
 
-  // Rating
   if (selectedRating.value !== null) {
     results = results.filter(h => parseFloat(h.rating) >= selectedRating.value);
   }
@@ -290,12 +306,6 @@ const resultsCount = computed(() => filteredHotels.value.length);
                 </div>
               </div>
             </v-card-text>
-
-            <v-card-actions class="pa-4 pt-0">
-              <v-btn color="grey-darken-1" variant="outlined" block @click="viewHotel(hotel.id)">
-                View Details
-              </v-btn>
-            </v-card-actions>
 
             <v-card-actions class="pa-4 pt-0">
               <v-btn color="success" variant="elevated" block @click="openBookingDialog(hotel)">

@@ -1,6 +1,5 @@
 import api from "@/router/api.js";
 
-// REGISTER
 export const registerUser = async (data) => {
   return await api.post("/register", data);
 };

@@ -7,7 +7,6 @@ const drawer = ref(false)
 const isLoggedIn = ref(false)
 const userName = ref('')
 
-// initial for name
 const initials = computed(() => {
   if (!userName.value) return '??'
   return userName.value
@@ -18,7 +17,6 @@ const initials = computed(() => {
     .slice(0, 2)
 })
 
-// Function to update login status
 const updateLoginStatus = () => {
   const token = localStorage.getItem('token')
   const savedUser = localStorage.getItem('user')
@@ -42,7 +40,6 @@ onMounted(() => {
   window.addEventListener('storage', updateLoginStatus)
 })
 
-// Logout function
 const logout = () => {
   if (confirm('Are you sure you want to log out?')) {
     localStorage.removeItem('token')

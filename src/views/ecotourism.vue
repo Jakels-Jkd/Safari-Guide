@@ -1,4 +1,3 @@
-<!-- src/views/SpiritualAndEcoTourism.vue -->
 <script setup>
 import { ref } from 'vue'
 </script>

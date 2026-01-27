@@ -561,8 +561,7 @@
 .page {
   position: relative;
   height: 100vh;
-  background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8)),
-              url('public/wildlife/safari.jpg') center/cover no-repeat fixed;
+  background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8));
   display: flex;
   align-items: center;
   justify-content: center;

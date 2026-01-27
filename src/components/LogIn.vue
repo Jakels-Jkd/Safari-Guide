@@ -1,3 +1,82 @@
+<script setup>
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+import axios from "axios";
+
+const API_URL = "http://127.0.0.1:8000/api/v1";
+
+const email = ref("");
+const password = ref("");
+const errorMessage = ref("");
+const loading = ref(false);
+const router = useRouter();
+const showPassword = ref(false);
+
+import { watch } from 'vue'
+
+watch(
+  () => localStorage.getItem('user'),
+  (newVal) => {
+    if (!newVal) {
+      if (router.currentRoute.value.path !== '/') {
+        router.push('/')
+      }
+    }
+  }
+)
+
+const login = async () => {
+  errorMessage.value = "";
+  loading.value = true;
+
+  try {
+    const response = await axios.post(`${API_URL}/login`, {
+      email: email.value.trim().toLowerCase(),
+      password: password.value,
+    });
+
+    const { user, token } = response.data;
+
+    localStorage.setItem("token", token);
+    localStorage.setItem("user", JSON.stringify(user));
+
+    //   logout detection
+    window.dispatchEvent(new Event('storage'))
+
+    const role = user.role.trim().toLowerCase();
+
+    if (role === "admin") {
+      router.push("/admin");
+    } else if (role === "hoteladmin") {
+      router.push("/hotel-admin");
+    } else if (role === "tourcompanyadmin") {
+      router.push("/tour-admin");
+    } else {
+      router.push("/");
+    }
+
+  } catch (err) {
+    console.error(err);
+    errorMessage.value = err.response?.data?.message || "Invalid credentials";
+  } finally {
+    loading.value = false;
+  }
+}
+const logout = async () => {
+  try {
+    await axios.post('/logout', {}, {
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+    })
+  } catch (err) {  }
+
+  localStorage.removeItem('token')
+  localStorage.removeItem('user')
+
+  window.dispatchEvent(new Event('storage'))
+
+  router.push('/')
+};
+</script>
 <template>
   <v-container>
     <v-row justify="center">
@@ -19,7 +98,6 @@
                 class="mb-4"
               />
 
-              <!-- PASSWORD WITH SHOW/HIDE TOGGLE -->
               <v-text-field
                 v-model="password"
                 :type="showPassword ? 'text' : 'password'"
@@ -63,57 +141,7 @@
   </v-container>
 </template>
 
-<script setup>
-import { ref } from "vue";
-import { useRouter } from "vue-router";
-import axios from "axios";
 
-const API_URL = "http://127.0.0.1:8000/api/v1";
-
-const email = ref("");
-const password = ref("");
-const errorMessage = ref("");
-const loading = ref(false);
-const router = useRouter();
-
-// ONLY THIS LINE ADDED
-const showPassword = ref(false);
-
-const login = async () => {
-  errorMessage.value = "";
-  loading.value = true;
-
-  try {
-    const response = await axios.post(`${API_URL}/login`, {
-      email: email.value.trim().toLowerCase(),
-      password: password.value,
-    });
-
-    const { user, token } = response.data;
-
-    localStorage.setItem("token", token);
-    localStorage.setItem("user", JSON.stringify(user));
-
-    const role = user.role.trim().toLowerCase();
-
-    if (role === "admin") {
-      await router.push("/admin");
-    } else if (role === "hoteladmin") {
-      await router.push("/hotel-admin");
-    } else if (role === "tourcompanyadmin") {
-      await router.push("/tour-admin");
-    } else {
-      await router.push("/");
-    }
-
-  } catch (err) {
-    console.error(err);
-    errorMessage.value = err.response?.data?.message || "Invalid credentials";
-  } finally {
-    loading.value = false;
-  }
-};
-</script>
 
 <style scoped>
 .katheu {

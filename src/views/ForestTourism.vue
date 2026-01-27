@@ -151,7 +151,7 @@ import { ref } from 'vue'
 
 .page {
   position: relative;
-  background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.8)), url('public/forests/page.jpg') center/cover no-repeat fixed;
+  background: linear-gradient(rgba(0,0,0,0.65));
   height: 55vh;
   display: flex;
   flex-direction: column;

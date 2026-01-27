@@ -1,3 +1,6 @@
+<script setup>
+import { ref } from 'vue'
+</script>
 <template>
   <div class="marine-page">
 
@@ -179,9 +182,7 @@
   </div>
 </template>
 
-<script setup>
-import { ref } from 'vue'
-</script>
+
 
 <style scoped>
 .marine-page {

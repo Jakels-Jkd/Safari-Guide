@@ -16,12 +16,12 @@ import NatureScenicTourism from "@/views/NatureScenicTourism.vue";
 import TravelBlog from "@/components/TravelBlog.vue";
 import lakesWestlands from "@/views/LakesWestlands.vue";
 import ContactUs from "@/components/ContactUs.vue";
-import Bookings from "@/components/booking.vue";
 import MarineBeachTourism from "@/views/MarineBeachTourism.vue";
 import DesertTourism from "@/views/DesertTourism.vue";
 import WaterSports from "@/views/waterSports.vue";
 import ForestTourism from "@/views/ForestTourism.vue";
 import Ecotourism from "@/views/ecotourism.vue";
+import Admin from "@/views/Admin.vue";
 
 const routes = [
   {
@@ -112,11 +112,6 @@ const routes = [
     component: ContactUs
   },
   {
-    name     : "Bookings",
-    path     : "/bookings",
-    component: Bookings
-  },
-  {
     name     : "DesertTourism",
     path     : "/deserttourism",
     component: DesertTourism
@@ -135,6 +130,11 @@ const routes = [
     name:'ecoutourism',
     path:'/ecotourism',
     component:Ecotourism
+  },
+  {
+    name:'Admin',
+    path:'/admin',
+    component:Admin
   }
 
 ];

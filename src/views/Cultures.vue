@@ -5,7 +5,6 @@ import { ref } from 'vue'
 <template>
   <div class="cultures-page">
 
-    <!-- HERO – exactly the one you loved -->
     <div class="nema">
       <div class="overlay"></div>
       <div class="hero-content">
@@ -95,7 +94,7 @@ import { ref } from 'vue'
       </v-row>
       <v-divider class="custom-divider" />
 
-      <!-- 5. Kalenjin – NOW COMPLETED -->
+      <!-- 5. Kalenjin –  -->
       <v-row class="mb-16 align-center culture-entry fade-in">
         <v-col cols="12" md="6">
           <v-img src="public/destinations/cultures/the kalenjin.png" class="rounded-xl shadow-2xl" height="520" cover />
@@ -111,7 +110,7 @@ import { ref } from 'vue'
       </v-row>
       <v-divider class="custom-divider" />
 
-      <!-- 6. Kamba – NOW COMPLETED -->
+      <!-- 6. Kamba –  -->
       <v-row class="mb-16 align-center culture-entry fade-in">
         <v-col cols="12" md="6" order-md="2">
           <v-img src="public/destinations/cultures/the kamba.png" class="rounded-xl shadow-2xl" height="520" cover />
@@ -127,7 +126,7 @@ import { ref } from 'vue'
       </v-row>
       <v-divider class="custom-divider" />
 
-      <!-- 7. Swahili – NOW COMPLETED -->
+      <!-- 7. Swahili –  -->
       <v-row class="mb-16 align-center culture-entry fade-in">
         <v-col cols="12" md="6">
           <v-img src="public/destinations/cultures/the swahili.png" class="rounded-xl shadow-2xl" height="520" cover />
@@ -174,7 +173,6 @@ import { ref } from 'vue'
         </v-col>
       </v-row>
 
-      <!-- FINAL MESSAGE – exactly as you loved it -->
       <div class="final-section py-20 text-center">
         <h2 class="final-title">One Kenya • Many Voices</h2>
         <p class="final-quote">
@@ -197,7 +195,7 @@ import { ref } from 'vue'
       </div>
     </v-container>
 
-    <!-- FOOTER – unchanged, beautiful -->
+    <!-- FOOTER  -->
     <footer class="culture-footer">
       <p class="text-h6">© 2025 Safari Guide Kenya — Celebrating 42 Tribes</p>
       <div class="contact">
@@ -209,7 +207,6 @@ import { ref } from 'vue'
   </div>
 </template>
 
-<!-- EXACT SAME STYLE YOU LOVED – NOT A SINGLE CHANGE -->
 <style scoped>
 .cultures-page {
   background: linear-gradient(to bottom, #fffaf0, #fdfd96 5%, #f5f5dc 95%);
@@ -308,7 +305,6 @@ import { ref } from 'vue'
 }
 .culture-entry:nth-child(2) { animation-delay: 0.2s; }
 .culture-entry:nth-child(4) { animation-delay: 0.4s; }
-/* ... up to last one */
 
 @keyframes fadeInUp {
   to { opacity: 1; transform: translateY(0); }
@@ -321,7 +317,6 @@ import { ref } from 'vue'
   margin: 6rem 0;
 }
 
-/* Footer & rest – exactly the same as before */
 .culture-footer {
   background: linear-gradient(135deg, #1b5e20, #2e7d32, #4caf50);
   color: white;

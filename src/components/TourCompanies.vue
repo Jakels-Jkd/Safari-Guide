@@ -146,7 +146,7 @@ export default {
         }));
 
         this.bookingDialog = false;
-        this.$router.push("/bookings");
+        this.$router.push("/userprofile");
 
       } catch (err) {
         alert("Booking failed: " + (err.response?.data?.message || "Try again"));
@@ -251,7 +251,6 @@ export default {
       </v-row>
     </v-container>
 
-    <!-- GRID -->
     <v-container class="mt-6 mb-16">
       <v-row v-if="filteredCompanies.length === 0" justify="center">
         <v-col cols="12" md="6" class="text-center py-10">
